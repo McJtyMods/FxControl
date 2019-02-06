@@ -1,6 +1,9 @@
 package mcjty.fxcontrol.proxy;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import mcjty.fxcontrol.ForgeEventHandlers;
+import mcjty.fxcontrol.RulesManager;
+import mcjty.fxcontrol.config.ConfigSetup;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,18 +15,18 @@ import java.util.concurrent.Callable;
 
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
-        //PacketHandler.registerMessages("fxcontrol");
-//        ConfigSetup.preInit(e);
-//        RulesManager.setRulePath(e.getModConfigurationDirectory());
+//        PacketHandler.registerMessages("fxcontrol");
+        ConfigSetup.preInit(e);
+        RulesManager.setRulePath(e.getModConfigurationDirectory());
     }
 
     public void init(FMLInitializationEvent e) {
-//        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
     }
 
     public void postInit(FMLPostInitializationEvent e) {
-//        ConfigSetup.postInit();
-//        RulesManager.readRules();
+        ConfigSetup.postInit();
+        RulesManager.readRules();
     }
 
     public World getClientWorld() {

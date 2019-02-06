@@ -1,6 +1,8 @@
 package mcjty.fxcontrol;
 
 
+import mcjty.fxcontrol.cache.StructureCache;
+import mcjty.fxcontrol.compat.LostCitySupport;
 import mcjty.fxcontrol.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -40,9 +42,9 @@ public class FxControl {
         lostcities = Loader.isModLoaded("lostcities");
         gamestages = Loader.isModLoaded("gamestages");
 
-//        if (lostcities) {
-//            LostCitySupport.register();
-//        }
+        if (lostcities) {
+            LostCitySupport.register();
+        }
     }
 
     @Mod.EventHandler
@@ -57,18 +59,12 @@ public class FxControl {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-//        event.registerServerCommand(new CmdReload());
-//        event.registerServerCommand(new CmdDebug());
-//        event.registerServerCommand(new CmdLoadSpawn());
-//        event.registerServerCommand(new CmdLoadPotentialSpawn());
-//        event.registerServerCommand(new CmdLoadSummonAid());
-//        event.registerServerCommand(new CmdLoadLoot());
-//        event.registerServerCommand(new CmdShowMobs());
-//        event.registerServerCommand(new CmdKillMobs());
+        event.registerServerCommand(new CmdReload());
+        event.registerServerCommand(new CmdDebug());
     }
 
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
-//        StructureCache.CACHE.clean();
+        StructureCache.CACHE.clean();
     }
 }
