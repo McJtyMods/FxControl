@@ -121,11 +121,11 @@ public class EffectRule {
                 .attribute(Attribute.create(TEMPCATEGORY))
                 .attribute(Attribute.create(DIFFICULTY))
                 .attribute(Attribute.create(STRUCTURE))
-                .attribute(Attribute.create(HELDITEM))
                 .attribute(Attribute.create(OFFHANDITEM))
                 .attribute(Attribute.create(BOTHHANDSITEM))
                 .attribute(Attribute.create(GAMESTAGE))
                 .attribute(Attribute.createMulti(BLOCK))
+                .attribute(Attribute.createMulti(HELDITEM))
                 .attribute(Attribute.createMulti(BIOME))
                 .attribute(Attribute.createMulti(BIOMETYPE))
                 .attribute(Attribute.createMulti(DIMENSION))
@@ -275,7 +275,13 @@ public class EffectRule {
         if (element == null) {
             return null;
         } else {
-            AttributeMap map = FACTORY.parse(element);
+            AttributeMap map = null;
+            try {
+                map = FACTORY.parse(element);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
             int time = element.getAsJsonObject().has("timeout") ? element.getAsJsonObject().get("timeout").getAsInt() : 20;
             return new EffectRule(map, time);
         }
