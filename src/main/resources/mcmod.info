@@ -1,0 +1,15 @@
+[
+{
+  "modid": "fxcontrol",
+  "name": "FxControl",
+  "description": "Be In Control of Effects",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["McJty"],
+  "credits": "McJty",
+  "logoFile": "",
+  "screenshots": []
+}
+]
