@@ -9,6 +9,7 @@ import mcjty.fxcontrol.typed.AttributeMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -161,6 +162,18 @@ public class GenericRuleEvaluator {
         }
         if (map.has(BIOMETYPE)) {
             addBiomeTypesCheck(map);
+        }
+        if (map.has(HELMET)) {
+            addHelmetCheck(map);
+        }
+        if (map.has(CHESTPLATE)) {
+            addChestplateCheck(map);
+        }
+        if (map.has(LEGGINGS)) {
+            addLeggingsCheck(map);
+        }
+        if (map.has(BOOTS)) {
+            addBootsCheck(map);
         }
         if (map.has(HELDITEM)) {
             addHeldItemCheck(map);
@@ -526,6 +539,44 @@ public class GenericRuleEvaluator {
             }
         }
         return items;
+    }
+
+    public void addHelmetCheck(AttributeMap map) {
+        List<Item> items = getItems(map.getList(HELMET));
+        addArmorCheck(items, EntityEquipmentSlot.HEAD);
+    }
+
+    public void addChestplateCheck(AttributeMap map) {
+        List<Item> items = getItems(map.getList(CHESTPLATE));
+        addArmorCheck(items, EntityEquipmentSlot.CHEST);
+    }
+
+    public void addLeggingsCheck(AttributeMap map) {
+        List<Item> items = getItems(map.getList(LEGGINGS));
+        addArmorCheck(items, EntityEquipmentSlot.LEGS);
+    }
+
+    public void addBootsCheck(AttributeMap map) {
+        List<Item> items = getItems(map.getList(BOOTS));
+        addArmorCheck(items, EntityEquipmentSlot.FEET);
+    }
+
+    private void addArmorCheck(List<Item> items, EntityEquipmentSlot slot) {
+        checks.add((event,query) -> {
+            Entity entity = query.getEntity(event);
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
+                ItemStack armorItem = player.getItemStackFromSlot(slot);
+                if (!armorItem.isEmpty()) {
+                    for (Item item : items) {
+                        if (armorItem.getItem() == item) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        });
     }
 
     public void addHeldItemCheck(AttributeMap map) {

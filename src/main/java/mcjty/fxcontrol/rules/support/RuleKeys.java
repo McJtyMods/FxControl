@@ -30,6 +30,10 @@ public interface RuleKeys {
     Key<Boolean> INBUILDING = Key.create(Type.BOOLEAN, "inbuilding");
     Key<Boolean> INSTREET = Key.create(Type.BOOLEAN, "instreet");
     Key<Boolean> INSPHERE = Key.create(Type.BOOLEAN, "insphere");
+    Key<String> HELMET = Key.create(Type.STRING, "helmet");
+    Key<String> CHESTPLATE = Key.create(Type.STRING, "chestplate");
+    Key<String> LEGGINGS = Key.create(Type.STRING, "leggings");
+    Key<String> BOOTS = Key.create(Type.STRING, "boots");
     Key<String> HELDITEM = Key.create(Type.STRING, "helditem");
     Key<String> OFFHANDITEM = Key.create(Type.STRING, "offhanditem");
     Key<String> BOTHHANDSITEM = Key.create(Type.STRING, "bothhandsitem");
