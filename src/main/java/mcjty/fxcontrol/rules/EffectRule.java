@@ -24,9 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
@@ -141,6 +139,7 @@ public class EffectRule {
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.create(ACTION_FIRE))
                 .attribute(Attribute.create(ACTION_CLEAR))
+                .attribute(Attribute.create(ACTION_DAMAGE))
         ;
     }
 
@@ -173,7 +172,65 @@ public class EffectRule {
         if (map.has(ACTION_CLEAR)) {
             addClearAction(map);
         }
+        if (map.has(ACTION_DAMAGE)) {
+            addDamageAction(map);
+        }
     }
+
+    private static Map<String, DamageSource> damageMap = null;
+    private static void addSource(DamageSource source) {
+        damageMap.put(source.getDamageType(), source);
+    }
+
+    private void createDamageMap() {
+        if (damageMap == null) {
+            damageMap = new HashMap<>();
+            addSource(DamageSource.IN_FIRE);
+            addSource(DamageSource.LIGHTNING_BOLT);
+            addSource(DamageSource.ON_FIRE);
+            addSource(DamageSource.LAVA);
+            addSource(DamageSource.HOT_FLOOR);
+            addSource(DamageSource.IN_WALL);
+            addSource(DamageSource.CRAMMING);
+            addSource(DamageSource.DROWN);
+            addSource(DamageSource.STARVE);
+            addSource(DamageSource.CACTUS);
+            addSource(DamageSource.FALL);
+            addSource(DamageSource.FLY_INTO_WALL);
+            addSource(DamageSource.OUT_OF_WORLD);
+            addSource(DamageSource.GENERIC);
+            addSource(DamageSource.MAGIC);
+            addSource(DamageSource.WITHER);
+            addSource(DamageSource.ANVIL);
+            addSource(DamageSource.FALLING_BLOCK);
+            addSource(DamageSource.DRAGON_BREATH);
+            addSource(DamageSource.FIREWORKS);
+        }
+    }
+
+    private void addDamageAction(AttributeMap map) {
+        String damage = map.get(ACTION_DAMAGE);
+        createDamageMap();
+        String[] split = StringUtils.split(damage, "=");
+        DamageSource source = damageMap.get(split[0]);
+        if (source == null) {
+            FxControl.logger.log(Level.ERROR, "Can't find damage source '" + split[0] + "'!");
+            return;
+        }
+        float amount = 1.0f;
+        if (split.length > 1) {
+            amount = Float.parseFloat(split[1]);
+        }
+
+        float finalAmount = amount;
+        actions.add(event -> {
+            EntityLivingBase living = event.getEntityLiving();
+            if (living != null) {
+                living.attackEntityFrom(source, finalAmount);
+            }
+        });
+    }
+
 
     private void addClearAction(AttributeMap map) {
         Boolean clear = map.get(ACTION_CLEAR);

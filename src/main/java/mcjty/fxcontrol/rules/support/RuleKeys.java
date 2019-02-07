@@ -47,4 +47,5 @@ public interface RuleKeys {
     Key<String> ACTION_POTION = Key.create(Type.STRING, "potion");
     Key<Integer> ACTION_FIRE = Key.create(Type.INTEGER, "fire");
     Key<Boolean> ACTION_CLEAR = Key.create(Type.BOOLEAN, "clear");
+    Key<String> ACTION_DAMAGE = Key.create(Type.STRING, "damage");
 }
