@@ -61,6 +61,7 @@ public class RulesManager {
             }
             i++;
         }
+        FxControl.logger.log(Level.INFO, "Loaded " + i + " rules!");
     }
 
     private static JsonElement getRootElement(String path, String filename) {
@@ -68,7 +69,7 @@ public class RulesManager {
         if (path == null) {
             file = new File(filename);
         } else {
-            file = new File(path + File.separator + "FxControl", filename);
+            file = new File(path + File.separator + "fxcontrol", filename);
         }
         if (!file.exists()) {
             // Create an empty rule file
