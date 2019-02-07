@@ -4,6 +4,7 @@ import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.cache.StructureCache;
 import mcjty.fxcontrol.compat.GameStageSupport;
 import mcjty.fxcontrol.compat.LostCitySupport;
+import mcjty.fxcontrol.compat.SereneSeasonsSupport;
 import mcjty.fxcontrol.typed.AttributeMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,34 @@ public class GenericRuleEvaluator {
             addMaxHeightCheck(map);
         }
 
+        if (map.has(SUMMER)) {
+            if (FxControl.sereneSeasons) {
+                addSummerCheck(map);
+            } else {
+                FxControl.logger.warn("Serene Seaons is missing: this test cannot work!");
+            }
+        }
+        if (map.has(WINTER)) {
+            if (FxControl.sereneSeasons) {
+                addWinterCheck(map);
+            } else {
+                FxControl.logger.warn("Serene Seaons is missing: this test cannot work!");
+            }
+        }
+        if (map.has(SPRING)) {
+            if (FxControl.sereneSeasons) {
+                addSpringCheck(map);
+            } else {
+                FxControl.logger.warn("Serene Seaons is missing: this test cannot work!");
+            }
+        }
+        if (map.has(AUTUMN)) {
+            if (FxControl.sereneSeasons) {
+                addAutumnCheck(map);
+            } else {
+                FxControl.logger.warn("Serene Seaons is missing: this test cannot work!");
+            }
+        }
         if (map.has(GAMESTAGE)) {
             if (FxControl.gamestages) {
                 addGameStageCheck(map);
@@ -165,6 +194,26 @@ public class GenericRuleEvaluator {
                 return !query.getWorld(event).canBlockSeeSky(query.getPos(event));
             });
         }
+    }
+
+    private void addSummerCheck(AttributeMap map) {
+        Boolean s = map.get(SUMMER);
+        checks.add((event, query) -> s == FxControl.sereneSeasons && SereneSeasonsSupport.isSummer(query.getWorld(event)));
+    }
+
+    private void addWinterCheck(AttributeMap map) {
+        Boolean s = map.get(WINTER);
+        checks.add((event, query) -> s == FxControl.sereneSeasons && SereneSeasonsSupport.isWinter(query.getWorld(event)));
+    }
+
+    private void addSpringCheck(AttributeMap map) {
+        Boolean s = map.get(SPRING);
+        checks.add((event, query) -> s == FxControl.sereneSeasons && SereneSeasonsSupport.isSpring(query.getWorld(event)));
+    }
+
+    private void addAutumnCheck(AttributeMap map) {
+        Boolean s = map.get(AUTUMN);
+        checks.add((event, query) -> s == FxControl.sereneSeasons && SereneSeasonsSupport.isAutumn(query.getWorld(event)));
     }
 
     private void addGameStageCheck(AttributeMap map) {

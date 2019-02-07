@@ -34,6 +34,10 @@ public interface RuleKeys {
     Key<String> OFFHANDITEM = Key.create(Type.STRING, "offhanditem");
     Key<String> BOTHHANDSITEM = Key.create(Type.STRING, "bothhandsitem");
     Key<String> GAMESTAGE = Key.create(Type.STRING, "gamestage");
+    Key<Boolean> SUMMER = Key.create(Type.BOOLEAN, "summer");
+    Key<Boolean> WINTER = Key.create(Type.BOOLEAN, "winter");
+    Key<Boolean> SPRING = Key.create(Type.BOOLEAN, "spring");
+    Key<Boolean> AUTUMN = Key.create(Type.BOOLEAN, "autumn");
 
     // Outputs
     Key<String> ACTION_POTION = Key.create(Type.STRING, "potion");

@@ -33,6 +33,7 @@ public class FxControl {
 
     public static boolean lostcities = false;
     public static boolean gamestages = false;
+    public static boolean sereneSeasons = false;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
@@ -41,6 +42,7 @@ public class FxControl {
 
         lostcities = Loader.isModLoaded("lostcities");
         gamestages = Loader.isModLoaded("gamestages");
+        sereneSeasons = Loader.isModLoaded("sereneseasons");
 
         if (lostcities) {
             LostCitySupport.register();

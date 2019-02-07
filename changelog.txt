@@ -1,3 +1,7 @@
+0.0.2:
+- Added support for Serene Seasons with four new boolean keywords: 'winter', 'summer', 'spring', and 'autumn'
+- Fixed a bug on multiplayer where the effect timeouts would tick too fast when multiple players were online
+
 0.0.1:
 - New mod!
 
