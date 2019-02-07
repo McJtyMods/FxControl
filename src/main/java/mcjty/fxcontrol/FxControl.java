@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = FxControl.MODID, name = FxControl.MODNAME,
@@ -46,6 +47,13 @@ public class FxControl {
 
         if (lostcities) {
             LostCitySupport.register();
+            logger.log(Level.INFO, "Enabling support for Lost Cities");
+        }
+        if (gamestages) {
+            logger.log(Level.INFO, "Enabling support for Game Stages");
+        }
+        if (sereneSeasons) {
+            logger.log(Level.INFO, "Enabling support for Serene Seasons");
         }
     }
 
