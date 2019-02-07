@@ -140,6 +140,7 @@ public class EffectRule {
 
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.create(ACTION_FIRE))
+                .attribute(Attribute.create(ACTION_CLEAR))
         ;
     }
 
@@ -168,6 +169,21 @@ public class EffectRule {
         }
         if (map.has(ACTION_FIRE)) {
             addFireAction(map);
+        }
+        if (map.has(ACTION_CLEAR)) {
+            addClearAction(map);
+        }
+    }
+
+    private void addClearAction(AttributeMap map) {
+        Boolean clear = map.get(ACTION_CLEAR);
+        if (clear) {
+            actions.add(event -> {
+                EntityLivingBase living = event.getEntityLiving();
+                if (living != null) {
+                    living.clearActivePotions();
+                }
+            });
         }
     }
 

@@ -1,6 +1,7 @@
 0.0.2:
 - Added support for Serene Seasons with four new boolean keywords: 'winter', 'summer', 'spring', and 'autumn'
 - Added support for 'helmet', 'chestplate', 'leggings', and 'boots' tags. These work similar to the 'helditem' test
+- Added a new 'clear' action which will clear all potion effects
 - Fixed a bug on multiplayer where the effect timeouts would tick too fast when multiple players were online
 - Fixed the mod on case sensitive file systems (Linux)
 
