@@ -1,7 +1,6 @@
 package mcjty.fxcontrol;
 
 
-import mcjty.Test;
 import mcjty.fxcontrol.cache.StructureCache;
 import mcjty.fxcontrol.compat.LostCitySupport;
 import mcjty.fxcontrol.proxy.CommonProxy;
@@ -42,7 +41,6 @@ public class FxControl {
     public void preInit(FMLPreInitializationEvent event){
         logger = event.getModLog();
         proxy.preInit(event);
-        Test.testMe();
 
         lostcities = Loader.isModLoaded("lostcities");
         gamestages = Loader.isModLoaded("gamestages");

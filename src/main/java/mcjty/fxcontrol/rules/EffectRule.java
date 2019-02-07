@@ -4,10 +4,10 @@ import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
 import mcjty.fxcontrol.rules.support.IEventQuery;
-import mcjty.fxcontrol.typed.Attribute;
-import mcjty.fxcontrol.typed.AttributeMap;
-import mcjty.fxcontrol.typed.GenericAttributeMapFactory;
-import mcjty.fxcontrol.varia.Tools;
+import mcjty.typed.Attribute;
+import mcjty.typed.AttributeMap;
+import mcjty.typed.GenericAttributeMapFactory;
+import mcjty.varia.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -307,7 +307,7 @@ public class EffectRule {
     private List<Pair<Float, ItemStack>> getItems(List<String> itemNames) {
         List<Pair<Float, ItemStack>> items = new ArrayList<>();
         for (String name : itemNames) {
-            Pair<Float, ItemStack> pair = Tools.parseStackWithFactor(name);
+            Pair<Float, ItemStack> pair = Tools.parseStackWithFactor(name, FxControl.logger);
             if (pair.getValue().isEmpty()) {
                 FxControl.logger.log(Level.ERROR, "Unknown item '" + name + "'!");
             } else {
