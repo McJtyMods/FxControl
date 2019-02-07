@@ -194,6 +194,8 @@ curseforge {
         relations {
             optionalLibrary 'the-lost-cities'
             optionalLibrary 'game-stages'
+            optionalLibrary 'serene-seasons'
+            optionalLibrary 'baubles'
         }
     }
 }

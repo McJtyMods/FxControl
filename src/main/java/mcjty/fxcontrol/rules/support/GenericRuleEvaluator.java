@@ -2,10 +2,12 @@ package mcjty.fxcontrol.rules.support;
 
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.cache.StructureCache;
+import mcjty.fxcontrol.compat.BaublesSupport;
 import mcjty.fxcontrol.compat.GameStageSupport;
 import mcjty.fxcontrol.compat.LostCitySupport;
 import mcjty.fxcontrol.compat.SereneSeasonsSupport;
 import mcjty.fxcontrol.typed.AttributeMap;
+import mcjty.fxcontrol.typed.Key;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
@@ -114,6 +117,56 @@ public class GenericRuleEvaluator {
                 addInBuildingCheck(map);
             } else {
                 FxControl.logger.warn("The Lost Cities is missing: the 'inbuilding' test cannot work!");
+            }
+        }
+
+        if (map.has(AMULET)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, AMULET, BaublesSupport::getAmuletSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(RING)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, RING, BaublesSupport::getRingSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(BELT)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, BELT, BaublesSupport::getBeltSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(TRINKET)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, TRINKET, BaublesSupport::getTrinketSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(HEAD)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, HEAD, BaublesSupport::getHeadSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(BODY)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, BODY, BaublesSupport::getBodySlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
+            }
+        }
+        if (map.has(CHARM)) {
+            if (FxControl.baubles) {
+                addBaubleCheck(map, CHARM, BaublesSupport::getCharmSlots);
+            } else {
+                FxControl.logger.warn("Baubles is missing: this test cannot work!");
             }
         }
 
@@ -578,6 +631,28 @@ public class GenericRuleEvaluator {
             return false;
         });
     }
+
+    public void addBaubleCheck(AttributeMap map, Key<String> key, Supplier<int[]> slotSupplier) {
+        List<Item> items = getItems(map.getList(key));
+        checks.add((event,query) -> {
+            Entity entity = query.getEntity(event);
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
+                for (int slot : slotSupplier.get()) {
+                    ItemStack stack = BaublesSupport.getStack(player, slot);
+                    if (!stack.isEmpty()) {
+                        for (Item item : items) {
+                            if (stack.getItem() == item) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        });
+    }
+
 
     public void addHeldItemCheck(AttributeMap map) {
         List<Item> items = getItems(map.getList(HELDITEM));
