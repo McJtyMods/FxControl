@@ -118,6 +118,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
 
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.create(ACTION_FIRE))
+                .attribute(Attribute.create(ACTION_EXPLOSION))
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
         ;
@@ -151,6 +152,11 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
             @Override
             public World getWorld() {
                 return event.player.getEntityWorld();
+            }
+
+            @Override
+            public BlockPos getPosition() {
+                return event.player.getPosition();
             }
         };
         for (Consumer<EventGetter> action : actions) {

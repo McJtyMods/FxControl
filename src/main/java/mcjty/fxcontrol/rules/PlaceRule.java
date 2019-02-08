@@ -119,6 +119,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.create(ACTION_FIRE))
+                .attribute(Attribute.create(ACTION_EXPLOSION))
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
                 .attribute(Attribute.create(ACTION_RESULT))
@@ -166,6 +167,11 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
             @Override
             public World getWorld() {
                 return event.getWorld();
+            }
+
+            @Override
+            public BlockPos getPosition() {
+                return event.getPos();
             }
         };
         for (Consumer<EventGetter> action : actions) {
