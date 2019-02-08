@@ -1,7 +1,7 @@
 package mcjty.fxcontrol.rules.support;
 
-import mcjty.typed.Key;
-import mcjty.typed.Type;
+import mcjty.tools.typed.Key;
+import mcjty.tools.typed.Type;
 
 public interface RuleKeys {
 

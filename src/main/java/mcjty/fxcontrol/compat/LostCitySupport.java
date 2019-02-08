@@ -1,6 +1,6 @@
 package mcjty.fxcontrol.compat;
 
-import mcjty.fxcontrol.rules.support.IEventQuery;
+import mcjty.tools.rules.IEventQuery;
 import mcjty.lostcities.api.ILostChunkGenerator;
 import mcjty.lostcities.api.ILostChunkInfo;
 import mcjty.lostcities.api.ILostCities;
