@@ -3,6 +3,7 @@ Upcoming
 - Added a new 'breakevents.json' rule file with rules that fire when the player attempts to harvest a block.
   In addition to the keywords you can use normally this new file also has a 'result' with which you can
   'deny' the breaking of the block
+- Added new 'placeevents.json' rule file with rules that fire when the playaer attempts to place a block
 
 0.0.2:
 - Added support for Serene Seasons with four new boolean keywords: 'winter', 'summer', 'spring', and 'autumn'

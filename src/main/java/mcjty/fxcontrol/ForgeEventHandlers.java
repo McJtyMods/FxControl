@@ -2,6 +2,7 @@ package mcjty.fxcontrol;
 
 import mcjty.fxcontrol.rules.EffectRule;
 import mcjty.fxcontrol.rules.HarvestRule;
+import mcjty.fxcontrol.rules.PlaceRule;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,6 +18,31 @@ public class ForgeEventHandlers {
     public static boolean debug = false;
 
     public static Map<Integer, Integer> tickCounters = new HashMap<>();
+
+    @SubscribeEvent
+    public void onBlockPaceEvent(BlockEvent.PlaceEvent event) {
+        if (event.getWorld().isRemote) {
+            return;
+        }
+        int i = 0;
+        for (PlaceRule rule : RulesManager.placeRules) {
+            if (rule.match(event)) {
+                Event.Result result = rule.getResult();
+                if (debug) {
+                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                            + " entity: " + event.getPlayer().getName()
+                            + " y: " + event.getPos().getY()
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                }
+                rule.action(event);
+                if (result == Event.Result.DENY) {
+                    event.setCanceled(true);
+                }
+                return;
+            }
+            i++;
+        }
+    }
 
     @SubscribeEvent
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {

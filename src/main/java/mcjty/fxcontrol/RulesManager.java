@@ -3,6 +3,7 @@ package mcjty.fxcontrol;
 import com.google.gson.*;
 import mcjty.fxcontrol.rules.EffectRule;
 import mcjty.fxcontrol.rules.HarvestRule;
+import mcjty.fxcontrol.rules.PlaceRule;
 import org.apache.logging.log4j.Level;
 
 import java.io.*;
@@ -15,10 +16,12 @@ public class RulesManager {
     private static String path;
     public static List<EffectRule> effectRules = new ArrayList<>();
     public static List<HarvestRule> harvestRules = new ArrayList<>();
+    public static List<PlaceRule> placeRules = new ArrayList<>();
 
     public static void reloadRules() {
         effectRules.clear();
         harvestRules.clear();
+        placeRules.clear();
         readAllRules();
     }
 
@@ -38,6 +41,7 @@ public class RulesManager {
     private static void readAllRules() {
         readRules(path, "effects.json", EffectRule::parse, effectRules);
         readRules(path, "breakevents.json", HarvestRule::parse, harvestRules);
+        readRules(path, "placeevents.json", PlaceRule::parse, placeRules);
     }
 
     private static <T> void readRules(String path, String filename, Function<JsonElement, T> parser, List<T> rules) {
