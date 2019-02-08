@@ -10,6 +10,7 @@ import mcjty.tools.typed.GenericAttributeMapFactory;
 import mcjty.tools.varia.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -62,38 +63,10 @@ public class EffectRule {
         public Entity getAttacker(TickEvent.PlayerTickEvent o) {
             return null;
         }
-    };
-
-    public static final IEventQuery<EntityJoinWorldEvent> EVENT_QUERY_JOIN = new IEventQuery<EntityJoinWorldEvent>() {
-        @Override
-        public World getWorld(EntityJoinWorldEvent o) {
-            return o.getWorld();
-        }
 
         @Override
-        public BlockPos getPos(EntityJoinWorldEvent o) {
-            EntityJoinWorldEvent s = o;
-            return s.getEntity().getPosition();
-        }
-
-        @Override
-        public int getY(EntityJoinWorldEvent o) {
-            return (int) o.getEntity().getPosition().getY();
-        }
-
-        @Override
-        public Entity getEntity(EntityJoinWorldEvent o) {
-            return o.getEntity();
-        }
-
-        @Override
-        public DamageSource getSource(EntityJoinWorldEvent o) {
-            return null;
-        }
-
-        @Override
-        public Entity getAttacker(EntityJoinWorldEvent o) {
-            return null;
+        public EntityPlayer getPlayer(TickEvent.PlayerTickEvent o) {
+            return o.player;
         }
     };
 
@@ -340,10 +313,6 @@ public class EffectRule {
 
     public boolean match(TickEvent.PlayerTickEvent event) {
         return ruleEvaluator.match(event, EVENT_QUERY);
-    }
-
-    public boolean match(EntityJoinWorldEvent event) {
-        return ruleEvaluator.match(event, EVENT_QUERY_JOIN);
     }
 
     public void action(TickEvent.PlayerTickEvent event) {

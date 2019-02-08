@@ -1,9 +1,9 @@
 package mcjty.fxcontrol;
 
 
-import mcjty.fxcontrol.cache.StructureCache;
 import mcjty.fxcontrol.compat.LostCitySupport;
 import mcjty.fxcontrol.proxy.CommonProxy;
+import mcjty.tools.cache.StructureCache;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
