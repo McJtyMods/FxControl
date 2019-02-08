@@ -2,6 +2,7 @@ package mcjty.fxcontrol;
 
 import com.google.gson.*;
 import mcjty.fxcontrol.rules.EffectRule;
+import mcjty.fxcontrol.rules.HarvestRule;
 import org.apache.logging.log4j.Level;
 
 import java.io.*;
@@ -13,9 +14,11 @@ public class RulesManager {
 
     private static String path;
     public static List<EffectRule> effectRules = new ArrayList<>();
+    public static List<HarvestRule> harvestRules = new ArrayList<>();
 
     public static void reloadRules() {
         effectRules.clear();
+        harvestRules.clear();
         readAllRules();
     }
 
@@ -32,18 +35,9 @@ public class RulesManager {
         return f.exists() && !f.isDirectory();
     }
 
-    public static boolean readCustomEffectRules(String file) {
-        System.out.println("file = " + file);
-        if (!exists(file)) {
-            return false;
-        }
-        effectRules.clear();
-        readRules(null, file, EffectRule::parse, effectRules);
-        return true;
-    }
-
     private static void readAllRules() {
         readRules(path, "effects.json", EffectRule::parse, effectRules);
+        readRules(path, "breakevents.json", HarvestRule::parse, harvestRules);
     }
 
     private static <T> void readRules(String path, String filename, Function<JsonElement, T> parser, List<T> rules) {
@@ -77,7 +71,7 @@ public class RulesManager {
             return null;
         }
 
-        FxControl.logger.log(Level.INFO, "Reading spawn rules from " + filename);
+        FxControl.logger.log(Level.INFO, "Reading rules from " + filename);
         InputStream inputstream = null;
         try {
             inputstream = new FileInputStream(file);

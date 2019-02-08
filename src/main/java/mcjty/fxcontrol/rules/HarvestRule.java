@@ -14,54 +14,55 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
-public class EffectRule extends RuleBase<RuleBase.EventGetter> {
+public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
-    public static final IEventQuery<TickEvent.PlayerTickEvent> EVENT_QUERY = new IEventQuery<TickEvent.PlayerTickEvent>() {
+    public static final IEventQuery<BlockEvent.BreakEvent> EVENT_QUERY = new IEventQuery<BlockEvent.BreakEvent>() {
         @Override
-        public World getWorld(TickEvent.PlayerTickEvent o) {
-            return o.player.getEntityWorld();
+        public World getWorld(BlockEvent.BreakEvent o) {
+            return o.getWorld();
         }
 
         @Override
-        public BlockPos getPos(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition();
+        public BlockPos getPos(BlockEvent.BreakEvent o) {
+            return o.getPos();
         }
 
         @Override
-        public BlockPos getValidBlockPos(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition().down();
+        public BlockPos getValidBlockPos(BlockEvent.BreakEvent o) {
+            return o.getPos();
         }
 
         @Override
-        public int getY(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition().getY();
+        public int getY(BlockEvent.BreakEvent o) {
+            return o.getPos().getY();
         }
 
         @Override
-        public Entity getEntity(TickEvent.PlayerTickEvent o) {
-            return o.player;
+        public Entity getEntity(BlockEvent.BreakEvent o) {
+            return o.getPlayer();
         }
 
         @Override
-        public DamageSource getSource(TickEvent.PlayerTickEvent o) {
+        public DamageSource getSource(BlockEvent.BreakEvent o) {
             return null;
         }
 
         @Override
-        public Entity getAttacker(TickEvent.PlayerTickEvent o) {
+        public Entity getAttacker(BlockEvent.BreakEvent o) {
             return null;
         }
 
         @Override
-        public EntityPlayer getPlayer(TickEvent.PlayerTickEvent o) {
-            return o.player;
+        public EntityPlayer getPlayer(BlockEvent.BreakEvent o) {
+            return o.getPlayer();
         }
     };
 
@@ -120,37 +121,51 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(ACTION_FIRE))
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
+                .attribute(Attribute.create(ACTION_RESULT))
         ;
     }
 
+    private Event.Result result;
     private final GenericRuleEvaluator ruleEvaluator;
-    private final int timeout;
 
-    private EffectRule(AttributeMap map, int time) {
+    private HarvestRule(AttributeMap map) {
         super(FxControl.logger);
         ruleEvaluator = new GenericRuleEvaluator(map);
-        this.timeout = time > 0 ? time : 1;
         addActions(map);
     }
 
-    public int getTimeout() {
-        return timeout;
+    @Override
+    protected void addActions(AttributeMap map) {
+        super.addActions(map);
+
+        if (map.has(ACTION_RESULT)) {
+            String br = map.get(ACTION_RESULT);
+            if ("default".equals(br) || br.startsWith("def")) {
+                this.result = Event.Result.DEFAULT;
+            } else if ("allow".equals(br) || "true".equals(br)) {
+                this.result = Event.Result.ALLOW;
+            } else {
+                this.result = Event.Result.DENY;
+            }
+        } else {
+            this.result = Event.Result.DEFAULT;
+        }
     }
 
-    public boolean match(TickEvent.PlayerTickEvent event) {
+    public boolean match(BlockEvent.BreakEvent event) {
         return ruleEvaluator.match(event, EVENT_QUERY);
     }
 
-    public void action(TickEvent.PlayerTickEvent event) {
+    public void action(BlockEvent.BreakEvent event) {
         EventGetter getter = new EventGetter() {
             @Override
             public EntityLivingBase getEntityLiving() {
-                return event.player;
+                return event.getPlayer();
             }
 
             @Override
             public World getWorld() {
-                return event.player.getEntityWorld();
+                return event.getWorld();
             }
         };
         for (Consumer<EventGetter> action : actions) {
@@ -158,8 +173,12 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
         }
     }
 
+    public Event.Result getResult() {
+        return result;
+    }
 
-    public static EffectRule parse(JsonElement element) {
+
+    public static HarvestRule parse(JsonElement element) {
         if (element == null) {
             return null;
         } else {
@@ -170,8 +189,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
                 e.printStackTrace();
                 return null;
             }
-            int time = element.getAsJsonObject().has("timeout") ? element.getAsJsonObject().get("timeout").getAsInt() : 20;
-            return new EffectRule(map, time);
+            return new HarvestRule(map);
         }
     }
 }
