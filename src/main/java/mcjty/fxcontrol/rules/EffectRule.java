@@ -4,33 +4,28 @@ import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
 import mcjty.tools.rules.IEventQuery;
+import mcjty.tools.rules.RuleBase;
 import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
-import mcjty.tools.varia.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
-public class EffectRule {
+public class EffectRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
     public static final IEventQuery<TickEvent.PlayerTickEvent> EVENT_QUERY = new IEventQuery<TickEvent.PlayerTickEvent>() {
@@ -129,15 +124,10 @@ public class EffectRule {
     }
 
     private final GenericRuleEvaluator ruleEvaluator;
-    private final List<Consumer<EventGetter>> actions = new ArrayList<>();
     private final int timeout;
 
-    private interface EventGetter {
-        EntityLivingBase getEntityLiving();
-        World getWorld();
-    }
-
     private EffectRule(AttributeMap map, int time) {
+        super(FxControl.logger);
         ruleEvaluator = new GenericRuleEvaluator(map);
         this.timeout = time > 0 ? time : 1;
         addActions(map);
@@ -147,10 +137,10 @@ public class EffectRule {
         return timeout;
     }
 
-    private void addActions(AttributeMap map) {
-        if (map.has(ACTION_POTION)) {
-            addPotionsAction(map);
-        }
+    @Override
+    protected void addActions(AttributeMap map) {
+        super.addActions(map);
+
         if (map.has(ACTION_FIRE)) {
             addFireAction(map);
         }
@@ -238,75 +228,6 @@ public class EffectRule {
                 living.setFire(fireAction);
             }
         });
-    }
-
-    private void addPotionsAction(AttributeMap map) {
-        List<PotionEffect> effects = new ArrayList<>();
-        for (String p : map.getList(ACTION_POTION)) {
-            String[] splitted = StringUtils.split(p, ',');
-            if (splitted == null || splitted.length != 3) {
-                FxControl.logger.log(Level.ERROR, "Bad potion specifier '" + p + "'! Use <potion>,<duration>,<amplifier>");
-                continue;
-            }
-            Potion potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(splitted[0]));
-            if (potion == null) {
-                FxControl.logger.log(Level.ERROR, "Can't find potion '" + p + "'!");
-                continue;
-            }
-            int duration = 0;
-            int amplifier = 0;
-            try {
-                duration = Integer.parseInt(splitted[1]);
-                amplifier = Integer.parseInt(splitted[2]);
-            } catch (NumberFormatException e) {
-                FxControl.logger.log(Level.ERROR, "Bad duration or amplifier integer for '" + p + "'!");
-                continue;
-            }
-            effects.add(new PotionEffect(potion, duration, amplifier));
-        }
-        if (!effects.isEmpty()) {
-            actions.add(event -> {
-                EntityLivingBase living = event.getEntityLiving();
-                if (living != null) {
-                    for (PotionEffect effect : effects) {
-                        PotionEffect neweffect = new PotionEffect(effect.getPotion(), effect.getDuration(), effect.getAmplifier());
-                        living.addPotionEffect(neweffect);
-                    }
-                }
-            });
-        }
-    }
-
-    private List<Pair<Float, ItemStack>> getItems(List<String> itemNames) {
-        List<Pair<Float, ItemStack>> items = new ArrayList<>();
-        for (String name : itemNames) {
-            Pair<Float, ItemStack> pair = Tools.parseStackWithFactor(name, FxControl.logger);
-            if (pair.getValue().isEmpty()) {
-                FxControl.logger.log(Level.ERROR, "Unknown item '" + name + "'!");
-            } else {
-                items.add(pair);
-            }
-        }
-        return items;
-    }
-
-    private ItemStack getRandomItem(List<Pair<Float, ItemStack>> items, float total) {
-        float r = rnd.nextFloat() * total;
-        for (Pair<Float, ItemStack> pair : items) {
-            if (r <= pair.getLeft()) {
-                return pair.getRight().copy();
-            }
-            r -= pair.getLeft();
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private float getTotal(List<Pair<Float, ItemStack>> items) {
-        float total = 0.0f;
-        for (Pair<Float, ItemStack> pair : items) {
-            total += pair.getLeft();
-        }
-        return total;
     }
 
     private static Random rnd = new Random();
