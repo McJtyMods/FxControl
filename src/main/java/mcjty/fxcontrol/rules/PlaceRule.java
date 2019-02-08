@@ -106,6 +106,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.createMulti(CHARM))
 
                 .attribute(Attribute.createMulti(BLOCK))
+                .attribute(Attribute.createMulti(BLOCKUP))
                 .attribute(Attribute.createMulti(HELMET))
                 .attribute(Attribute.createMulti(CHESTPLATE))
                 .attribute(Attribute.createMulti(LEGGINGS))
