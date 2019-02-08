@@ -8,9 +8,9 @@ import net.minecraft.util.DamageSource;
 
 public class GameStageSupport {
 
-    public static boolean hasGameStage(Entity player, String stage) {
-        if (player instanceof EntityPlayer) {
-            IStageData stageData = GameStageHelper.getPlayerData((EntityPlayer) player);
+    public static boolean hasGameStage(EntityPlayer player, String stage) {
+        if (player != null) {
+            IStageData stageData = GameStageHelper.getPlayerData(player);
             return stageData.hasStage(stage);
         } else {
             return false;
