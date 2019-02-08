@@ -1,9 +1,6 @@
 package mcjty.fxcontrol;
 
-import mcjty.fxcontrol.rules.EffectRule;
-import mcjty.fxcontrol.rules.HarvestRule;
-import mcjty.fxcontrol.rules.PlaceRule;
-import mcjty.fxcontrol.rules.RightClickRule;
+import mcjty.fxcontrol.rules.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -46,6 +43,33 @@ public class ForgeEventHandlers {
             i++;
         }
     }
+
+    @SubscribeEvent
+    public void onRightClickEvent(PlayerInteractEvent.LeftClickBlock event) {
+        if (event.getWorld().isRemote) {
+            return;
+        }
+        int i = 0;
+        for (LeftClickRule rule : RulesManager.leftclickRules) {
+            if (rule.match(event)) {
+                Event.Result result = rule.getResult();
+                if (debug) {
+                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                            + " entity: " + event.getEntityPlayer().getName()
+                            + " y: " + event.getPos().getY()
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                }
+                rule.action(event);
+                event.setUseBlock(result);
+                if (result == Event.Result.DENY) {
+                    event.setCanceled(true);
+                }
+                return;
+            }
+            i++;
+        }
+    }
+
 
     @SubscribeEvent
     public void onBlockPaceEvent(BlockEvent.PlaceEvent event) {

@@ -1,10 +1,7 @@
 package mcjty.fxcontrol;
 
 import com.google.gson.*;
-import mcjty.fxcontrol.rules.EffectRule;
-import mcjty.fxcontrol.rules.HarvestRule;
-import mcjty.fxcontrol.rules.PlaceRule;
-import mcjty.fxcontrol.rules.RightClickRule;
+import mcjty.fxcontrol.rules.*;
 import org.apache.logging.log4j.Level;
 
 import java.io.*;
@@ -19,12 +16,14 @@ public class RulesManager {
     public static List<HarvestRule> harvestRules = new ArrayList<>();
     public static List<PlaceRule> placeRules = new ArrayList<>();
     public static List<RightClickRule> rightclickRules = new ArrayList<>();
+    public static List<LeftClickRule> leftclickRules = new ArrayList<>();
 
     public static void reloadRules() {
         effectRules.clear();
         harvestRules.clear();
         placeRules.clear();
         rightclickRules.clear();
+        leftclickRules.clear();
         readAllRules();
     }
 
@@ -46,6 +45,7 @@ public class RulesManager {
         readRules(path, "breakevents.json", HarvestRule::parse, harvestRules);
         readRules(path, "placeevents.json", PlaceRule::parse, placeRules);
         readRules(path, "rightclicks.json", RightClickRule::parse, rightclickRules);
+        readRules(path, "leftclicks.json", LeftClickRule::parse, leftclickRules);
     }
 
     private static <T> void readRules(String path, String filename, Function<JsonElement, T> parser, List<T> rules) {

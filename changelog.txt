@@ -5,6 +5,7 @@ Upcoming
   'deny' the breaking of the block
 - Added new 'placeevents.json' rule file with rules that fire when the player attempts to place a block
 - Added new 'rightclicks.json' rule file with rules that fire when the player attempts to interact with a block (right click)
+- Added new 'leftclicks.json' rule file with rules that fire when the player attempts to interact with a block (left click)
 - New 'explosion' string keyword (<strength>,<flaming>,<smoking>) for 'effects.json', 'placeevents.json', and 'breakevents.json'
 - New 'blockup' test for various rules which will test the condition of the block above the current position
 
