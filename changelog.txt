@@ -9,6 +9,7 @@
 - New 'explosion' string keyword (<strength>,<flaming>,<smoking>) for 'effects.json', 'placeevents.json', and 'breakevents.json'
 - New 'blockup' test for various rules which will test the condition of the block above the current position
 - New 'message' action to print a status message on screen for the player. Can be used for debugging or for messages
+- New 'give' action to give a (random) item to the player
 
 0.0.2:
 - Added support for Serene Seasons with four new boolean keywords: 'winter', 'summer', 'spring', and 'autumn'

@@ -45,7 +45,7 @@ public class ForgeEventHandlers {
     }
 
     @SubscribeEvent
-    public void onRightClickEvent(PlayerInteractEvent.LeftClickBlock event) {
+    public void onLeftClickEvent(PlayerInteractEvent.LeftClickBlock event) {
         if (event.getWorld().isRemote) {
             return;
         }
