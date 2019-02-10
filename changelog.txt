@@ -1,3 +1,7 @@
+Upcoming
+- Much more powerful item description system with expressions on damage and nbt
+- New fctrldump command to dump the NBT of the currently held item
+
 0.1.0:
 - Added support for baubles: new 'amulet', 'ring', 'belt', 'trinket', 'charm', 'body', 'and 'head' keywords
 - Added a new 'breakevents.json' rule file with rules that fire when the player attempts to harvest a block.
