@@ -126,6 +126,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(ACTION_DAMAGE))
                 .attribute(Attribute.create(ACTION_RESULT))
                 .attribute(Attribute.createMulti(ACTION_GIVE))
+                .attribute(Attribute.createMulti(ACTION_DROP))
         ;
     }
 
