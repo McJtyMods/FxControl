@@ -76,6 +76,7 @@ public class FxControl {
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new CmdReload());
         event.registerServerCommand(new CmdDebug());
+        event.registerServerCommand(new CmdDumpNBT());
     }
 
     @Mod.EventHandler
