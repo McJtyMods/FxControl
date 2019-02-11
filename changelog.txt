@@ -7,6 +7,8 @@ Upcoming
 - Fixed 'give' command so that it will drop the item on the ground if the player has no room for the item
 - Removed 'blockup' command and instead add a more general 'blockoffset' command that works together with the 'block' command
 - New 'setblock' action to set a block at a position
+- Fixed support for Lost Cities
+- Added support for EnigmaScript though 'state' and 'pstate' tests and 'setstate' and 'setpstate' commands
 
 0.1.0:
 - Added support for baubles: new 'amulet', 'ring', 'belt', 'trinket', 'charm', 'body', 'and 'head' keywords

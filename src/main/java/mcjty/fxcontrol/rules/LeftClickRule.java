@@ -2,8 +2,10 @@ package mcjty.fxcontrol.rules;
 
 import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
+import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
 import mcjty.tools.rules.IEventQuery;
+import mcjty.tools.rules.IModRuleCompatibilityLayer;
 import mcjty.tools.rules.RuleBase;
 import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
@@ -125,6 +127,8 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(ACTION_DAMAGE))
                 .attribute(Attribute.create(ACTION_SETBLOCK))
                 .attribute(Attribute.create(ACTION_RESULT))
+                .attribute(Attribute.create(ACTION_SETSTATE))
+                .attribute(Attribute.create(ACTION_SETPSTATE))
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.createMulti(ACTION_GIVE))
                 .attribute(Attribute.createMulti(ACTION_DROP))
@@ -137,12 +141,12 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
     private LeftClickRule(AttributeMap map) {
         super(FxControl.logger);
         ruleEvaluator = new GenericRuleEvaluator(map);
-        addActions(map);
+        addActions(map, new ModRuleCompatibilityLayer());
     }
 
     @Override
-    protected void addActions(AttributeMap map) {
-        super.addActions(map);
+    protected void addActions(AttributeMap map, IModRuleCompatibilityLayer layer) {
+        super.addActions(map, layer);
 
         if (map.has(ACTION_RESULT)) {
             String br = map.get(ACTION_RESULT);

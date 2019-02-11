@@ -2,6 +2,7 @@ package mcjty.fxcontrol.rules;
 
 import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
+import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
 import mcjty.tools.rules.IEventQuery;
 import mcjty.tools.rules.RuleBase;
@@ -123,6 +124,8 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
                 .attribute(Attribute.create(ACTION_SETBLOCK))
+                .attribute(Attribute.create(ACTION_SETSTATE))
+                .attribute(Attribute.create(ACTION_SETPSTATE))
                 .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.createMulti(ACTION_GIVE))
                 .attribute(Attribute.createMulti(ACTION_DROP))
@@ -136,7 +139,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
         super(FxControl.logger);
         ruleEvaluator = new GenericRuleEvaluator(map);
         this.timeout = time > 0 ? time : 1;
-        addActions(map);
+        addActions(map, new ModRuleCompatibilityLayer());
     }
 
     public int getTimeout() {

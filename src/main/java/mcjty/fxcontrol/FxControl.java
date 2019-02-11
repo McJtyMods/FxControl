@@ -1,6 +1,7 @@
 package mcjty.fxcontrol;
 
 
+import mcjty.fxcontrol.compat.EnigmaSupport;
 import mcjty.fxcontrol.compat.LostCitySupport;
 import mcjty.fxcontrol.proxy.CommonProxy;
 import mcjty.tools.cache.StructureCache;
@@ -36,6 +37,7 @@ public class FxControl {
     public static boolean gamestages = false;
     public static boolean sereneSeasons = false;
     public static boolean baubles = false;
+    public static boolean enigma = false;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
@@ -46,6 +48,7 @@ public class FxControl {
         gamestages = Loader.isModLoaded("gamestages");
         sereneSeasons = Loader.isModLoaded("sereneseasons");
         baubles = Loader.isModLoaded("baubles");
+        enigma = Loader.isModLoaded("enigma");
 
         if (lostcities) {
             LostCitySupport.register();
@@ -59,6 +62,10 @@ public class FxControl {
         }
         if (baubles) {
             logger.log(Level.INFO, "Enabling support for Baubles");
+        }
+        if (enigma) {
+            EnigmaSupport.register();
+            logger.log(Level.INFO, "Enabling support for EnigmaScript");
         }
     }
 

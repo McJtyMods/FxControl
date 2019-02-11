@@ -3,7 +3,6 @@ package mcjty.fxcontrol.compat;
 import mcjty.fxcontrol.FxControl;
 import mcjty.tools.rules.IEventQuery;
 import mcjty.tools.rules.IModRuleCompatibilityLayer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -116,6 +115,30 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
         return SereneSeasonsSupport.isAutumn(world);
     }
 
+    @Override
+    public boolean hasEnigmaScript() {
+        return FxControl.enigma;
+    }
+
+    @Override
+    public String getPlayerState(EntityPlayer player, String statename) {
+        return EnigmaSupport.getPlayerState(player, statename);
+    }
+
+    @Override
+    public String getState(World world, String statename) {
+        return EnigmaSupport.getState(world, statename);
+    }
+
+    @Override
+    public void setPlayerState(EntityPlayer player, String statename, String statevalue) {
+        EnigmaSupport.setPlayerState(player, statename, statevalue);
+    }
+
+    @Override
+    public void setState(World world, String statename, String statevalue) {
+        EnigmaSupport.setState(world, statename, statevalue);
+    }
 
     @Override
     public String getBiomeName(Biome biome) {
