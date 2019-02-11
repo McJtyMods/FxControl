@@ -16,7 +16,7 @@ public class LostCitySupport {
     private static ILostCities lostCities;
 
     public static void register() {
-        FMLInterModComms.sendFunctionMessage("lostcities", "getLostCities", "mcjty.incontrol.compat.LostCitySupport$GetLostCities");
+        FMLInterModComms.sendFunctionMessage("lostcities", "getLostCities", "mcjty.fxcontrol.compat.LostCitySupport$GetLostCities");
     }
 
 
