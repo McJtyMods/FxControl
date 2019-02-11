@@ -1,7 +1,8 @@
 Upcoming
 - Much more powerful item description system with expressions on damage and nbt
 - Giving items (armor, helditem, give command) is now also much more general and supports the new system
-- New fctrldump command to dump the NBT of the currently held item
+- New fctrldumpitem command to dump the NBT of the currently held item
+- New fctrldumpblock command to dump information of the block that the player is looking at
 - New 'drop' command which will drop an item (instead of giving it to the player)
 - Fixed 'give' command so that it will drop the item on the ground if the player has no room for the item
 - Removed 'blockup' command and instead add a more general 'blockoffset' command that works together with the 'block' command
