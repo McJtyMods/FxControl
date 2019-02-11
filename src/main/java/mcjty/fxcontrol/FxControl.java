@@ -22,7 +22,7 @@ public class FxControl {
 
     public static final String MODID = "fxcontrol";
     public static final String MODNAME = "FxControl";
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "0.1.1";
     public static final String MIN_FORGE11_VER = "13.19.0.2176";
 
     @SidedProxy(clientSide = "mcjty.fxcontrol.proxy.ClientProxy", serverSide = "mcjty.fxcontrol.proxy.ServerProxy")

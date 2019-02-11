@@ -1,4 +1,4 @@
-Upcoming
+0.1.1:
 - Much more powerful item description system with expressions on damage and nbt
 - Giving items (armor, helditem, give command) is now also much more general and supports the new system
 - New fctrldumpitem command to dump the NBT of the currently held item
