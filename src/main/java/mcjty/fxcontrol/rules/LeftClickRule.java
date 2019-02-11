@@ -118,13 +118,14 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.createMulti(BIOMETYPE))
                 .attribute(Attribute.createMulti(DIMENSION))
 
-                .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.create(ACTION_MESSAGE))
                 .attribute(Attribute.create(ACTION_FIRE))
                 .attribute(Attribute.create(ACTION_EXPLOSION))
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
+                .attribute(Attribute.create(ACTION_SETBLOCK))
                 .attribute(Attribute.create(ACTION_RESULT))
+                .attribute(Attribute.createMulti(ACTION_POTION))
                 .attribute(Attribute.createMulti(ACTION_GIVE))
                 .attribute(Attribute.createMulti(ACTION_DROP))
         ;
