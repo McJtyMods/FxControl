@@ -1,22 +1,19 @@
 package mcjty.fxcontrol;
 
+import mcjty.tools.varia.LookAtTools;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +32,7 @@ public class CmdDumpBlockNBT extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
-            RayTraceResult result = getMovingObjectPositionFromPlayer(player.getEntityWorld(), player, false);
+            RayTraceResult result = LookAtTools.getMovingObjectPositionFromPlayer(player.getEntityWorld(), player, false);
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
                 IBlockState state = player.getEntityWorld().getBlockState(result.getBlockPos());
                 sender.sendMessage(new TextComponentString(TextFormatting.GOLD + state.getBlock().getRegistryName().toString()));
@@ -47,32 +44,6 @@ public class CmdDumpBlockNBT extends CommandBase {
         } else {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "This can only be done for a player!"));
         }
-    }
-
-    private static RayTraceResult getMovingObjectPositionFromPlayer(World worldIn, EntityPlayer playerIn, boolean useLiquids) {
-        float pitch = playerIn.rotationPitch;
-        float yaw = playerIn.rotationYaw;
-        Vec3d vec3 = getPlayerEyes(playerIn);
-        float f2 = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
-        float f3 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
-        float f4 = -MathHelper.cos(-pitch * 0.017453292F);
-        float f5 = MathHelper.sin(-pitch * 0.017453292F);
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double reach = 5.0D;
-        if (playerIn instanceof net.minecraft.entity.player.EntityPlayerMP) {
-            reach = ((EntityPlayerMP)playerIn).interactionManager.getBlockReachDistance();
-        }
-        Vec3d vec31 = vec3.addVector(f6 * reach, f5 * reach, f7 * reach);
-        return worldIn.rayTraceBlocks(vec3, vec31, useLiquids, !useLiquids, false);
-    }
-
-
-    private static Vec3d getPlayerEyes(EntityPlayer playerIn) {
-        double x = playerIn.posX;
-        double y = playerIn.posY + playerIn.getEyeHeight();
-        double z = playerIn.posZ;
-        return new Vec3d(x, y, z);
     }
 
 
