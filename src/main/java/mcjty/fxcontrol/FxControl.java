@@ -80,6 +80,11 @@ public class FxControl {
     }
 
     @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent e) {
+        RulesManager.readRules();
+    }
+
+    @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new CmdReload());
         event.registerServerCommand(new CmdDebug());
