@@ -124,6 +124,8 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(ACTION_CLEAR))
                 .attribute(Attribute.create(ACTION_DAMAGE))
                 .attribute(Attribute.create(ACTION_SETBLOCK))
+                .attribute(Attribute.create(ACTION_SETHELDITEM))
+                .attribute(Attribute.create(ACTION_SETHELDAMOUNT))
                 .attribute(Attribute.create(ACTION_SETSTATE))
                 .attribute(Attribute.create(ACTION_SETPSTATE))
                 .attribute(Attribute.createMulti(ACTION_POTION))

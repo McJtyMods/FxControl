@@ -1,3 +1,6 @@
+Upcoming:
+- New 'setheldamount' and 'sethelditem' actions which can be used to change the item that the player is holding
+
 0.1.4:
 - Update to be compatible with In Control 3.9.4
 
