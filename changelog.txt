@@ -1,4 +1,4 @@
-Upcoming:
+0.1.5:
 - New 'setheldamount' and 'sethelditem' actions which can be used to change the item that the player is holding
 
 0.1.4:
