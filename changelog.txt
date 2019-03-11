@@ -1,3 +1,6 @@
+0.1.6:
+- Fixed a problem with sethelditem and setheldamount not making a copy of the stack
+
 0.1.5:
 - New 'setheldamount' and 'sethelditem' actions which can be used to change the item that the player is holding
 
