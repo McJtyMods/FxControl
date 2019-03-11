@@ -59,11 +59,11 @@ public class RulesManager {
             if (rule != null) {
                 rules.add(rule);
             } else {
-                FxControl.logger.log(Level.ERROR, "Rule " + i + " in " + filename + " is invalid, skipping!");
+                FxControl.setup.getLogger().log(Level.ERROR, "Rule " + i + " in " + filename + " is invalid, skipping!");
             }
             i++;
         }
-        FxControl.logger.log(Level.INFO, "Loaded " + i + " rules!");
+        FxControl.setup.getLogger().log(Level.INFO, "Loaded " + i + " rules!");
     }
 
     private static JsonElement getRootElement(String path, String filename) {
@@ -79,12 +79,12 @@ public class RulesManager {
             return null;
         }
 
-        FxControl.logger.log(Level.INFO, "Reading rules from " + filename);
+        FxControl.setup.getLogger().log(Level.INFO, "Reading rules from " + filename);
         InputStream inputstream = null;
         try {
             inputstream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            FxControl.logger.log(Level.ERROR, "Error reading " + filename + "!");
+            FxControl.setup.getLogger().log(Level.ERROR, "Error reading " + filename + "!");
             return null;
         }
 
@@ -92,7 +92,7 @@ public class RulesManager {
         try {
             br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            FxControl.logger.log(Level.ERROR, "Error reading " + filename + "!");
+            FxControl.setup.getLogger().log(Level.ERROR, "Error reading " + filename + "!");
             return null;
         }
 
@@ -107,7 +107,7 @@ public class RulesManager {
         try {
             writer = new PrintWriter(file);
         } catch (FileNotFoundException e) {
-            FxControl.logger.log(Level.ERROR, "Error writing " + file.getName() + "!");
+            FxControl.setup.getLogger().log(Level.ERROR, "Error writing " + file.getName() + "!");
             return;
         }
         JsonArray array = new JsonArray();

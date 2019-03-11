@@ -28,7 +28,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                    FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getEntityPlayer().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
@@ -54,7 +54,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                    FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getEntityPlayer().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
@@ -81,7 +81,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                    FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
@@ -106,7 +106,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    FxControl.logger.log(Level.INFO, "Rule " + i + ": "+ result
+                    FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
@@ -140,7 +140,7 @@ public class ForgeEventHandlers {
         for (EffectRule rule : RulesManager.effectRules) {
             if (tickCounter % rule.getTimeout() == 0 && rule.match(event)) {
                 if (debug) {
-                    FxControl.logger.log(Level.INFO, "Join Rule " + i
+                    FxControl.setup.getLogger().log(Level.INFO, "Join Rule " + i
                             + " entity: " + event.player.getName()
                             + " y: " + event.player.getPosition().getY());
                 }

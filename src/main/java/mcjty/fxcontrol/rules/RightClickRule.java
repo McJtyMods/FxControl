@@ -141,7 +141,7 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
     private final GenericRuleEvaluator ruleEvaluator;
 
     private RightClickRule(AttributeMap map) {
-        super(FxControl.logger);
+        super(FxControl.setup.getLogger());
         ruleEvaluator = new GenericRuleEvaluator(map);
         addActions(map, new ModRuleCompatibilityLayer());
     }

@@ -138,7 +138,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
     private final int timeout;
 
     private EffectRule(AttributeMap map, int time) {
-        super(FxControl.logger);
+        super(FxControl.setup.getLogger());
         ruleEvaluator = new GenericRuleEvaluator(map);
         this.timeout = time > 0 ? time : 1;
         addActions(map, new ModRuleCompatibilityLayer());

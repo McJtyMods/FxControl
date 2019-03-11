@@ -8,7 +8,7 @@ import mcjty.tools.typed.AttributeMap;
 public class GenericRuleEvaluator extends CommonRuleEvaluator {
 
     public GenericRuleEvaluator(AttributeMap map) {
-        super(map, FxControl.logger, new ModRuleCompatibilityLayer());
+        super(map, FxControl.setup.getLogger(), new ModRuleCompatibilityLayer());
     }
 
     @Override

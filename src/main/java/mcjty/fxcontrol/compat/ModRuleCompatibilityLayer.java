@@ -1,6 +1,6 @@
 package mcjty.fxcontrol.compat;
 
-import mcjty.fxcontrol.FxControl;
+import mcjty.fxcontrol.setup.ModSetup;
 import mcjty.tools.rules.IEventQuery;
 import mcjty.tools.rules.IModRuleCompatibilityLayer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +12,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public boolean hasBaubles() {
-        return FxControl.baubles;
+        return ModSetup.baubles;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public boolean hasGameStages() {
-        return FxControl.gamestages;
+        return ModSetup.gamestages;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public boolean hasLostCities() {
-        return FxControl.lostcities;
+        return ModSetup.lostcities;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public boolean hasSereneSeasons() {
-        return FxControl.sereneSeasons;
+        return ModSetup.sereneSeasons;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public boolean hasEnigmaScript() {
-        return FxControl.enigma;
+        return ModSetup.enigma;
     }
 
     @Override
