@@ -1,6 +1,10 @@
 package mcjty.fxcontrol;
 
 
+import mcjty.fxcontrol.commands.CmdDebug;
+import mcjty.fxcontrol.commands.CmdDumpBlockNBT;
+import mcjty.fxcontrol.commands.CmdDumpItemNBT;
+import mcjty.fxcontrol.commands.CmdReload;
 import mcjty.fxcontrol.setup.IProxy;
 import mcjty.fxcontrol.setup.ModSetup;
 import mcjty.tools.cache.StructureCache;
