@@ -2,9 +2,7 @@ package mcjty.fxcontrol.compat;
 
 import net.darkhax.gamestages.GameStageHelper;
 import net.darkhax.gamestages.data.IStageData;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 
 public class GameStageSupport {
 
@@ -14,6 +12,20 @@ public class GameStageSupport {
             return stageData.hasStage(stage);
         } else {
             return false;
+        }
+    }
+
+    public static void addGameStage(EntityPlayer player, String stage) {
+        if (player != null) {
+            IStageData stageData = GameStageHelper.getPlayerData(player);
+            stageData.addStage(stage);
+        }
+    }
+
+    public static void removeGameStage(EntityPlayer player, String stage) {
+        if (player != null) {
+            IStageData stageData = GameStageHelper.getPlayerData(player);
+            stageData.addStage(stage);
         }
     }
 }

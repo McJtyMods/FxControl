@@ -1,5 +1,6 @@
 Upcoming:
 - New 'command' command for effects, harvest rules, leftclick rules, placement rules and right click rules. This executes a console command. Use with care!
+- New 'addstage' and 'removestage' commands in case Game Stages is present
 
 0.1.6:
 - Fixed a problem with sethelditem and setheldamount not making a copy of the stack

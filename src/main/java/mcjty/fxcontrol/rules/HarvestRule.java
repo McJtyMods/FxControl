@@ -121,6 +121,8 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.createMulti(DIMENSION))
 
                 .attribute(Attribute.create(ACTION_COMMAND))
+                .attribute(Attribute.create(ACTION_ADDSTAGE))
+                .attribute(Attribute.create(ACTION_REMOVESTAGE))
                 .attribute(Attribute.create(ACTION_MESSAGE))
                 .attribute(Attribute.create(ACTION_FIRE))
                 .attribute(Attribute.create(ACTION_EXPLOSION))
