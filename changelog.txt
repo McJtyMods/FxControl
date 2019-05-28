@@ -1,4 +1,4 @@
-Upcoming:
+0.1.8:
 - The 'mintime' and 'maxtime' tests will now correctly work beyond the first day
 
 0.1.7:
