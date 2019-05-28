@@ -1,3 +1,6 @@
+Upcoming:
+- The 'mintime' and 'maxtime' tests will now correctly work beyond the first day
+
 0.1.7:
 - New 'command' command for effects, harvest rules, leftclick rules, placement rules and right click rules. This executes a console command. Use with care!
 - New 'addstage' and 'removestage' commands in case Game Stages is present
