@@ -1,4 +1,4 @@
-Upcoming:
+0.1.9:
 - Allow 'count' for itemstacks with 'give' and related commands
 
 0.1.8:
