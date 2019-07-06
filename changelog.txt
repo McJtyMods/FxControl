@@ -1,3 +1,6 @@
+0.1.11:
+- Bump to align with InControl
+
 0.1.10:
 - Fixed a problem with Minecraft mods being reported as 'forge' instead of 'minecraft'
 
