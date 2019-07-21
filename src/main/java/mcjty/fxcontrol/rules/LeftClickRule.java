@@ -13,6 +13,7 @@ import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -65,6 +66,11 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
         @Override
         public EntityPlayer getPlayer(PlayerInteractEvent.LeftClickBlock o) {
             return o.getEntityPlayer();
+        }
+
+        @Override
+        public ItemStack getItem(PlayerInteractEvent.LeftClickBlock o) {
+            return o.getItemStack();
         }
     };
 

@@ -1,3 +1,6 @@
+Upcoming
+- Place, left click and right click rules now also supports the 'mod' test for the item that is being used to do the action
+
 0.1.11:
 - Bump to align with InControl
 

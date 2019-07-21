@@ -12,6 +12,7 @@ import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -63,6 +64,11 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
         @Override
         public EntityPlayer getPlayer(TickEvent.PlayerTickEvent o) {
             return o.player;
+        }
+
+        @Override
+        public ItemStack getItem(TickEvent.PlayerTickEvent o) {
+            return ItemStack.EMPTY;
         }
     };
 

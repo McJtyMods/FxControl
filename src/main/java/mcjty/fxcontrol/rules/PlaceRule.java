@@ -13,6 +13,7 @@ import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -66,6 +67,11 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
         public EntityPlayer getPlayer(BlockEvent.PlaceEvent o) {
             return o.getPlayer();
         }
+
+        @Override
+        public ItemStack getItem(BlockEvent.PlaceEvent o) {
+            return o.getItemInHand();
+        }
     };
 
     static {
@@ -86,6 +92,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(TEMPCATEGORY))
                 .attribute(Attribute.create(DIFFICULTY))
                 .attribute(Attribute.create(STRUCTURE))
+                .attribute(Attribute.create(MOD))
 
                 .attribute(Attribute.create(GAMESTAGE))
 
