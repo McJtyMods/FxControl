@@ -1,3 +1,6 @@
+0.1.13:
+- Fixed a bug with the new 'mod' keyword
+
 0.1.12:
 - Place, left click and right click rules now also supports the 'mod' test for the item that is being used to do the action
 

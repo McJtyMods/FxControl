@@ -92,7 +92,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(TEMPCATEGORY))
                 .attribute(Attribute.create(DIFFICULTY))
                 .attribute(Attribute.create(STRUCTURE))
-                .attribute(Attribute.create(MOD))
+                .attribute(Attribute.createMulti(MOD))
 
                 .attribute(Attribute.create(GAMESTAGE))
 

@@ -92,6 +92,7 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(TEMPCATEGORY))
                 .attribute(Attribute.create(DIFFICULTY))
                 .attribute(Attribute.create(STRUCTURE))
+                .attribute(Attribute.createMulti(MOD))
 
                 .attribute(Attribute.create(GAMESTAGE))
 
