@@ -120,6 +120,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.createMulti(LEGGINGS))
                 .attribute(Attribute.createMulti(BOOTS))
                 .attribute(Attribute.createMulti(HELDITEM))
+                .attribute(Attribute.createMulti(PLAYER_HELDITEM))
                 .attribute(Attribute.createMulti(OFFHANDITEM))
                 .attribute(Attribute.createMulti(BOTHHANDSITEM))
                 .attribute(Attribute.createMulti(BIOME))
