@@ -5,13 +5,10 @@ import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.RulesManager;
 import mcjty.fxcontrol.compat.EnigmaSupport;
 import mcjty.fxcontrol.compat.LostCitySupport;
-import mcjty.fxcontrol.config.ConfigSetup;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.ModList;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ModSetup {
@@ -24,23 +21,28 @@ public class ModSetup {
 
     private Logger logger;
 
-    public void preInit(FMLPreInitializationEvent e) {
-        logger = e.getModLog();
-
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
-
+    public void init() {
+        logger = LogManager.getLogger(FxControl.MODID);
         setupModCompat();
 
-        ConfigSetup.init(e);
-        RulesManager.setRulePath(e.getModConfigurationDirectory());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        RulesManager.readRules();
+
+        // @todo 1.15
+//        ConfigSetup.init(e);
+//        RulesManager.setRulePath(e.getModConfigurationDirectory());
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     private void setupModCompat() {
-        lostcities = Loader.isModLoaded("lostcities");
-        gamestages = Loader.isModLoaded("gamestages");
-        sereneSeasons = Loader.isModLoaded("sereneseasons");
-        baubles = Loader.isModLoaded("baubles");
-        enigma = Loader.isModLoaded("enigma");
+        lostcities = ModList.get().isLoaded("lostcities");
+        gamestages = ModList.get().isLoaded("gamestages");
+        sereneSeasons = ModList.get().isLoaded("sereneseasons");
+        baubles = ModList.get().isLoaded("baubles");
+        enigma = ModList.get().isLoaded("enigma");
 
         if (ModSetup.lostcities) {
             LostCitySupport.register();
@@ -59,16 +61,5 @@ public class ModSetup {
             EnigmaSupport.register();
             FxControl.setup.getLogger().log(Level.INFO, "Enabling support for EnigmaScript");
         }
-    }
-
-    public void init(FMLInitializationEvent e) {
-    }
-
-    public void postInit(FMLPostInitializationEvent e) {
-        ConfigSetup.postInit();
-    }
-
-    public Logger getLogger() {
-        return logger;
     }
 }

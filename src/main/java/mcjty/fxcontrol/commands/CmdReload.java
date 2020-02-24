@@ -1,26 +1,33 @@
 package mcjty.fxcontrol.commands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.fxcontrol.RulesManager;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.text.StringTextComponent;
 
-public class CmdReload extends CommandBase {
-    @Override
-    public String getName() {
-        return "fctrlreload";
+public class CmdReload implements Command<CommandSource> {
+
+    private static final CmdReload CMD = new CmdReload();
+
+    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+        return Commands.literal("reload")
+                .requires(cs -> cs.hasPermissionLevel(1))
+                .executes(CMD);
     }
 
     @Override
-    public String getUsage(ICommandSender sender) {
-        return "fctrlreload";
-    }
-
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        sender.sendMessage(new TextComponentString("Reloaded FxControl rules"));
-        RulesManager.reloadRules();
+    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        ServerPlayerEntity player = context.getSource().asPlayer();
+        if (player != null) {
+            player.sendMessage(new StringTextComponent("Reloaded FxControl rules"));
+            RulesManager.reloadRules();
+        }
+        return 0;
     }
 }

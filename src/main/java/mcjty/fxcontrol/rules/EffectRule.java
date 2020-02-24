@@ -10,13 +10,13 @@ import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.function.Consumer;
 
@@ -62,7 +62,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
         }
 
         @Override
-        public EntityPlayer getPlayer(TickEvent.PlayerTickEvent o) {
+        public PlayerEntity getPlayer(TickEvent.PlayerTickEvent o) {
             return o.player;
         }
 
@@ -165,12 +165,12 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
     public void action(TickEvent.PlayerTickEvent event) {
         EventGetter getter = new EventGetter() {
             @Override
-            public EntityLivingBase getEntityLiving() {
+            public LivingEntity getEntityLiving() {
                 return event.player;
             }
 
             @Override
-            public EntityPlayer getPlayer() {
+            public PlayerEntity getPlayer() {
                 return event.player;
             }
 

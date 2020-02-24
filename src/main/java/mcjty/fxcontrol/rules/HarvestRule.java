@@ -11,14 +11,14 @@ import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.function.Consumer;
 
@@ -30,7 +30,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
     public static final IEventQuery<BlockEvent.BreakEvent> EVENT_QUERY = new IEventQuery<BlockEvent.BreakEvent>() {
         @Override
         public World getWorld(BlockEvent.BreakEvent o) {
-            return o.getWorld();
+            return o.getWorld().getWorld();
         }
 
         @Override
@@ -64,7 +64,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
         }
 
         @Override
-        public EntityPlayer getPlayer(BlockEvent.BreakEvent o) {
+        public PlayerEntity getPlayer(BlockEvent.BreakEvent o) {
             return o.getPlayer();
         }
 
@@ -181,18 +181,18 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
     public void action(BlockEvent.BreakEvent event) {
         EventGetter getter = new EventGetter() {
             @Override
-            public EntityLivingBase getEntityLiving() {
+            public LivingEntity getEntityLiving() {
                 return event.getPlayer();
             }
 
             @Override
-            public EntityPlayer getPlayer() {
+            public PlayerEntity getPlayer() {
                 return event.getPlayer();
             }
 
             @Override
             public World getWorld() {
-                return event.getWorld();
+                return event.getWorld().getWorld();
             }
 
             @Override

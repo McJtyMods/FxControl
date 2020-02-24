@@ -11,14 +11,14 @@ import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.function.Consumer;
 
@@ -50,7 +50,7 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
 
         @Override
         public Entity getEntity(PlayerInteractEvent.RightClickBlock o) {
-            return o.getEntityPlayer();
+            return o.getPlayer();
         }
 
         @Override
@@ -64,8 +64,8 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
         }
 
         @Override
-        public EntityPlayer getPlayer(PlayerInteractEvent.RightClickBlock o) {
-            return o.getEntityPlayer();
+        public PlayerEntity getPlayer(PlayerInteractEvent.RightClickBlock o) {
+            return o.getPlayer();
         }
 
         @Override
@@ -182,13 +182,13 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
     public void action(PlayerInteractEvent.RightClickBlock event) {
         EventGetter getter = new EventGetter() {
             @Override
-            public EntityLivingBase getEntityLiving() {
-                return event.getEntityPlayer();
+            public LivingEntity getEntityLiving() {
+                return event.getPlayer();
             }
 
             @Override
-            public EntityPlayer getPlayer() {
-                return event.getEntityPlayer();
+            public PlayerEntity getPlayer() {
+                return event.getPlayer();
             }
 
             @Override

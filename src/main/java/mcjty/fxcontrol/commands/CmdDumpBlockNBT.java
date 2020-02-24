@@ -1,23 +1,6 @@
 package mcjty.fxcontrol.commands;
 
-import mcjty.tools.varia.LookAtTools;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.StringUtils;
-
-public class CmdDumpBlockNBT extends CommandBase {
+public class CmdDumpBlockNBT {} /* @todo 1.15 extends CommandBase {
     @Override
     public String getName() {
         return "fctrldumpblock";
@@ -30,11 +13,11 @@ public class CmdDumpBlockNBT extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
+        if (sender instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) sender;
             RayTraceResult result = LookAtTools.getMovingObjectPositionFromPlayer(player.getEntityWorld(), player, false);
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                IBlockState state = player.getEntityWorld().getBlockState(result.getBlockPos());
+                BlockState state = player.getEntityWorld().getBlockState(result.getBlockPos());
                 sender.sendMessage(new TextComponentString(TextFormatting.GOLD + state.getBlock().getRegistryName().toString()));
                 for (IProperty<?> key : state.getPropertyKeys()) {
                     String value = state.getValue(key).toString();
@@ -47,7 +30,7 @@ public class CmdDumpBlockNBT extends CommandBase {
     }
 
 
-    private static void dumpNBT(ICommandSender sender, int indent, NBTTagCompound nbt) {
+    private static void dumpNBT(ICommandSender sender, int indent, CompoundNBT nbt) {
         for (String key : nbt.getKeySet()) {
             NBTBase base = nbt.getTag(key);
             byte id = base.getId();
@@ -81,7 +64,7 @@ public class CmdDumpBlockNBT extends CommandBase {
                         int idx = 0;
                         for (NBTBase bs : list) {
                             sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + StringUtils.repeat(' ', indent+2) + "Index " + idx)); idx++;
-                            dumpNBT(sender, indent + 4, (NBTTagCompound) bs);
+                            dumpNBT(sender, indent + 4, (CompoundNBT) bs);
                         }
                     }
                     break;
@@ -96,3 +79,4 @@ public class CmdDumpBlockNBT extends CommandBase {
         }
     }
 }
+*/

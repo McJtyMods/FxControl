@@ -1,24 +1,6 @@
 package mcjty.fxcontrol.commands;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Set;
-
-public class CmdDumpItemNBT extends CommandBase {
+public class CmdDumpItemNBT {} /* @todo 1.15 extends CommandBase {
     @Override
     public String getName() {
         return "fctrldumpitem";
@@ -31,12 +13,12 @@ public class CmdDumpItemNBT extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
+        if (sender instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) sender;
             ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
             Item item = heldItem.getItem();
             sender.sendMessage(new TextComponentString(TextFormatting.GOLD + item.getRegistryName().toString() + " Damage " + heldItem.getItemDamage()));
-            NBTTagCompound nbt = heldItem.getTagCompound();
+            CompoundNBT nbt = heldItem.getTagCompound();
             if (nbt != null) {
                 dumpNBT(sender, 2, nbt);
             }
@@ -45,7 +27,7 @@ public class CmdDumpItemNBT extends CommandBase {
         }
     }
 
-    private static void dumpNBT(ICommandSender sender, int indent, NBTTagCompound nbt) {
+    private static void dumpNBT(ICommandSender sender, int indent, CompoundNBT nbt) {
         for (String key : nbt.getKeySet()) {
             NBTBase base = nbt.getTag(key);
             byte id = base.getId();
@@ -79,7 +61,7 @@ public class CmdDumpItemNBT extends CommandBase {
                         int idx = 0;
                         for (NBTBase bs : list) {
                             sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + StringUtils.repeat(' ', indent+2) + "Index " + idx)); idx++;
-                            dumpNBT(sender, indent + 4, (NBTTagCompound) bs);
+                            dumpNBT(sender, indent + 4, (CompoundNBT) bs);
                         }
                     }
                     break;
@@ -94,3 +76,4 @@ public class CmdDumpItemNBT extends CommandBase {
         }
     }
 }
+*/

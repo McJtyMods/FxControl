@@ -1,12 +1,14 @@
 package mcjty.fxcontrol;
 
+import mcjty.fxcontrol.commands.ModCommands;
 import mcjty.fxcontrol.rules.*;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
@@ -15,6 +17,11 @@ import java.util.Map;
 public class ForgeEventHandlers {
 
     public static boolean debug = false;
+
+    @SubscribeEvent
+    public void serverLoad(FMLServerStartingEvent event) {
+        ModCommands.register(event.getCommandDispatcher());
+    }
 
     public static Map<Integer, Integer> tickCounters = new HashMap<>();
 
@@ -29,9 +36,9 @@ public class ForgeEventHandlers {
                 Event.Result result = rule.getResult();
                 if (debug) {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
-                            + " entity: " + event.getEntityPlayer().getName()
+                            + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getDisplayName().getFormattedText());
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -55,9 +62,9 @@ public class ForgeEventHandlers {
                 Event.Result result = rule.getResult();
                 if (debug) {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
-                            + " entity: " + event.getEntityPlayer().getName()
+                            + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getDisplayName().getFormattedText());
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -72,8 +79,8 @@ public class ForgeEventHandlers {
 
 
     @SubscribeEvent
-    public void onBlockPaceEvent(BlockEvent.PlaceEvent event) {
-        if (event.getWorld().isRemote) {
+    public void onBlockPaceEvent(BlockEvent.EntityPlaceEvent event) {
+        if (event.getWorld().isRemote()) {
             return;
         }
         int i = 0;
@@ -82,9 +89,9 @@ public class ForgeEventHandlers {
                 Event.Result result = rule.getResult();
                 if (debug) {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
-                            + " entity: " + event.getPlayer().getName()
+                            + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getDisplayName().getFormattedText());
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {
@@ -98,7 +105,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
-        if (event.getWorld().isRemote) {
+        if (event.getWorld().isRemote()) {
             return;
         }
         int i = 0;
@@ -109,7 +116,7 @@ public class ForgeEventHandlers {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).biomeName);
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getDisplayName().getFormattedText());
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {
@@ -126,7 +133,7 @@ public class ForgeEventHandlers {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        if (event.side != Side.SERVER) {
+        if (event.side != LogicalSide.SERVER) {
             return;
         }
 

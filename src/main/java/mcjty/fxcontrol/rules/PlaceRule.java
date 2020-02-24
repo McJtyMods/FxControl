@@ -11,14 +11,14 @@ import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.function.Consumer;
 
@@ -27,50 +27,51 @@ import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
-    public static final IEventQuery<BlockEvent.PlaceEvent> EVENT_QUERY = new IEventQuery<BlockEvent.PlaceEvent>() {
+    public static final IEventQuery<BlockEvent.EntityPlaceEvent> EVENT_QUERY = new IEventQuery<BlockEvent.EntityPlaceEvent>() {
         @Override
-        public World getWorld(BlockEvent.PlaceEvent o) {
-            return o.getWorld();
+        public World getWorld(BlockEvent.EntityPlaceEvent o) {
+            return o.getWorld().getWorld();
         }
 
         @Override
-        public BlockPos getPos(BlockEvent.PlaceEvent o) {
+        public BlockPos getPos(BlockEvent.EntityPlaceEvent o) {
             return o.getPos();
         }
 
         @Override
-        public BlockPos getValidBlockPos(BlockEvent.PlaceEvent o) {
+        public BlockPos getValidBlockPos(BlockEvent.EntityPlaceEvent o) {
             return o.getPos();
         }
 
         @Override
-        public int getY(BlockEvent.PlaceEvent o) {
+        public int getY(BlockEvent.EntityPlaceEvent o) {
             return o.getPos().getY();
         }
 
         @Override
-        public Entity getEntity(BlockEvent.PlaceEvent o) {
-            return o.getPlayer();
+        public Entity getEntity(BlockEvent.EntityPlaceEvent o) {
+            return o.getEntity();
         }
 
         @Override
-        public DamageSource getSource(BlockEvent.PlaceEvent o) {
+        public DamageSource getSource(BlockEvent.EntityPlaceEvent o) {
             return null;
         }
 
         @Override
-        public Entity getAttacker(BlockEvent.PlaceEvent o) {
+        public Entity getAttacker(BlockEvent.EntityPlaceEvent o) {
             return null;
         }
 
         @Override
-        public EntityPlayer getPlayer(BlockEvent.PlaceEvent o) {
-            return o.getPlayer();
+        public PlayerEntity getPlayer(BlockEvent.EntityPlaceEvent o) {
+            return o.getEntity() instanceof PlayerEntity ? (PlayerEntity) o.getEntity() : null;
         }
 
         @Override
-        public ItemStack getItem(BlockEvent.PlaceEvent o) {
-            return o.getItemInHand();
+        public ItemStack getItem(BlockEvent.EntityPlaceEvent o) {
+            // @todo 1.15 is this the right hand?
+            return o.getEntity() instanceof PlayerEntity ? ((PlayerEntity) o.getEntity()).getHeldItemMainhand() : ItemStack.EMPTY;
         }
     };
 
@@ -175,25 +176,25 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
         }
     }
 
-    public boolean match(BlockEvent.PlaceEvent event) {
+    public boolean match(BlockEvent.EntityPlaceEvent event) {
         return ruleEvaluator.match(event, EVENT_QUERY);
     }
 
-    public void action(BlockEvent.PlaceEvent event) {
+    public void action(BlockEvent.EntityPlaceEvent event) {
         EventGetter getter = new EventGetter() {
             @Override
-            public EntityLivingBase getEntityLiving() {
-                return event.getPlayer();
+            public LivingEntity getEntityLiving() {
+                return (LivingEntity) event.getEntity();
             }
 
             @Override
-            public EntityPlayer getPlayer() {
-                return event.getPlayer();
+            public PlayerEntity getPlayer() {
+                return event.getEntity() instanceof PlayerEntity ? (PlayerEntity) event.getEntity() : null;
             }
 
             @Override
             public World getWorld() {
-                return event.getWorld();
+                return event.getWorld().getWorld();
             }
 
             @Override

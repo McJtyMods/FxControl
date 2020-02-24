@@ -33,7 +33,7 @@ public class GenericRuleEvaluator extends CommonRuleEvaluator {
             String modid = mods.get(0);
             checks.add((event, query) -> {
                 ItemStack item = query.getItem(event);
-                return modid.equals(item.getItem().getRegistryName().getResourceDomain());
+                return modid.equals(item.getItem().getRegistryName().getNamespace());
             });
         } else {
             Set<String> modids = new HashSet<>();
@@ -42,7 +42,7 @@ public class GenericRuleEvaluator extends CommonRuleEvaluator {
             }
             checks.add((event, query) -> {
                 ItemStack item = query.getItem(event);
-                String mod = item.getItem().getRegistryName().getResourceDomain();
+                String mod = item.getItem().getRegistryName().getNamespace();
                 return modids.contains(mod);
             });
         }
