@@ -1,3 +1,6 @@
+1.0.1:
+- Fixed a problem where the config files where generated in the root
+
 0.1.14:
 - Worked around a problem caused in the previous version of In Control. The issue was that there was both a condition called 'helditem' as well as an action called 'helditem'. For spawns the condition has been renamed to 'playerhelditem'. It is recommended to use this in other places as well (when used as a condition)
 

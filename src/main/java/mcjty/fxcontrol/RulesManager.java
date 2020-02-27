@@ -5,6 +5,7 @@ import mcjty.fxcontrol.rules.*;
 import org.apache.logging.log4j.Level;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -27,8 +28,8 @@ public class RulesManager {
         readAllRules();
     }
 
-    public static void setRulePath(File directory) {
-        path = directory.getPath();
+    public static void setRulePath(Path path) {
+        RulesManager.path = path.toString();
     }
 
     public static void readRules() {
@@ -41,6 +42,11 @@ public class RulesManager {
     }
 
     private static void readAllRules() {
+        File directory = new File(path + File.separator + "fxcontrol");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
         readRules(path, "effects.json", EffectRule::parse, effectRules);
         readRules(path, "breakevents.json", HarvestRule::parse, harvestRules);
         readRules(path, "placeevents.json", PlaceRule::parse, placeRules);
