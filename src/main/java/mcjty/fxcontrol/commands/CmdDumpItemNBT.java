@@ -17,13 +17,13 @@ public class CmdDumpItemNBT {} /* @todo 1.15 extends CommandBase {
             PlayerEntity player = (PlayerEntity) sender;
             ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
             Item item = heldItem.getItem();
-            sender.sendMessage(new TextComponentString(TextFormatting.GOLD + item.getRegistryName().toString() + " Damage " + heldItem.getItemDamage()));
+            sender.sendMessage(new StringTextComponent(TextFormatting.GOLD + item.getRegistryName().toString() + " Damage " + heldItem.getItemDamage()));
             CompoundNBT nbt = heldItem.getTagCompound();
             if (nbt != null) {
                 dumpNBT(sender, 2, nbt);
             }
         } else {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "This can only be done for a player!"));
+            sender.sendMessage(new StringTextComponent(TextFormatting.RED + "This can only be done for a player!"));
         }
     }
 
@@ -33,44 +33,44 @@ public class CmdDumpItemNBT {} /* @todo 1.15 extends CommandBase {
             byte id = base.getId();
             switch (id) {
                 case Constants.NBT.TAG_INT:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Int) " + key + " = " + nbt.getInteger(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Int) " + key + " = " + nbt.getInteger(key)));
                     break;
                 case Constants.NBT.TAG_LONG:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Long) " + key + " = " + nbt.getLong(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Long) " + key + " = " + nbt.getLong(key)));
                     break;
                 case Constants.NBT.TAG_DOUBLE:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Double) " + key + " = " + nbt.getDouble(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Double) " + key + " = " + nbt.getDouble(key)));
                     break;
                 case Constants.NBT.TAG_FLOAT:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Float) " + key + " = " + nbt.getFloat(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Float) " + key + " = " + nbt.getFloat(key)));
                     break;
                 case Constants.NBT.TAG_STRING:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(String) " + key + " = " + nbt.getString(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(String) " + key + " = " + nbt.getString(key)));
                     break;
                 case Constants.NBT.TAG_BYTE:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Byte) " + key + " = " + nbt.getByte(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Byte) " + key + " = " + nbt.getByte(key)));
                     break;
                 case Constants.NBT.TAG_SHORT:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(Short) " + key + " = " + nbt.getShort(key)));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(Short) " + key + " = " + nbt.getShort(key)));
                     break;
                 case Constants.NBT.TAG_LIST:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(List) " + key));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(List) " + key));
                     NBTBase b = nbt.getTag(key);
                     if (((NBTTagList)b).getTagType() == Constants.NBT.TAG_COMPOUND) {
                         NBTTagList list = nbt.getTagList(key, Constants.NBT.TAG_COMPOUND);
                         int idx = 0;
                         for (NBTBase bs : list) {
-                            sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + StringUtils.repeat(' ', indent+2) + "Index " + idx)); idx++;
+                            sender.sendMessage(new StringTextComponent(TextFormatting.YELLOW + StringUtils.repeat(' ', indent+2) + "Index " + idx)); idx++;
                             dumpNBT(sender, indent + 4, (CompoundNBT) bs);
                         }
                     }
                     break;
                 case Constants.NBT.TAG_COMPOUND:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(NBT) " + key));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(NBT) " + key));
                     dumpNBT(sender, indent + 2, nbt.getCompoundTag(key));
                     break;
                 default:
-                    sender.sendMessage(new TextComponentString(StringUtils.repeat(' ', indent) + "(?) " + key));
+                    sender.sendMessage(new StringTextComponent(StringUtils.repeat(' ', indent) + "(?) " + key));
                     break;
             }
         }
