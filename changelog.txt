@@ -1,3 +1,7 @@
+Upcoming:
+- Avoid server-side crashes in combination with debug command
+- Getting the item that was used to place a block is now more reliable
+
 1.0.1:
 - Fixed a problem where the config files where generated in the root
 

@@ -29,9 +29,6 @@ public class ModSetup {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
         RulesManager.setRulePath(FMLPaths.CONFIGDIR.get());
         RulesManager.readRules();
-
-        // @todo 1.15
-//        ConfigSetup.init(e);
     }
 
     public Logger getLogger() {

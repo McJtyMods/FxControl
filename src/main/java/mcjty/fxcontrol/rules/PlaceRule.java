@@ -70,8 +70,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
         @Override
         public ItemStack getItem(BlockEvent.EntityPlaceEvent o) {
-            // @todo 1.15 is this the right hand?
-            return o.getEntity() instanceof PlayerEntity ? ((PlayerEntity) o.getEntity()).getHeldItemMainhand() : ItemStack.EMPTY;
+            return o.getEntity() instanceof PlayerEntity ? ((PlayerEntity) o.getEntity()).getHeldItem(((PlayerEntity) o.getEntity()).getActiveHand()) : ItemStack.EMPTY;
         }
     };
 
