@@ -1,4 +1,4 @@
-Upcoming:
+1.0.2:
 - Avoid server-side crashes in combination with debug command
 - Getting the item that was used to place a block is now more reliable
 
