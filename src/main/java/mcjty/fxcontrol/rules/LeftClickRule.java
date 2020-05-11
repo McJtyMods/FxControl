@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
+import org.apache.logging.log4j.Level;
 
 import java.util.function.Consumer;
 
@@ -219,7 +220,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
             try {
                 map = FACTORY.parse(element);
             } catch (Exception e) {
-                e.printStackTrace();
+                FxControl.setup.getLogger().log(Level.ERROR, e);
                 return null;
             }
             return new LeftClickRule(map);

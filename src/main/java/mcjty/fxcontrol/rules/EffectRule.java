@@ -198,7 +198,7 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
             try {
                 map = FACTORY.parse(element);
             } catch (Exception e) {
-                e.printStackTrace();
+                FxControl.setup.getLogger().error(e);
                 return null;
             }
             int time = element.getAsJsonObject().has("timeout") ? element.getAsJsonObject().get("timeout").getAsInt() : 20;
