@@ -1,3 +1,6 @@
+1.0.3:
+- Fixed a bug with the health, damage, and speed actions. They often fired multiple times making the mobs too OP
+
 1.0.2:
 - Avoid server-side crashes in combination with debug command
 - Getting the item that was used to place a block is now more reliable
