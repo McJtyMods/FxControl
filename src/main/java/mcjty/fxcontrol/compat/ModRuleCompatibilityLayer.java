@@ -159,6 +159,8 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public String getBiomeName(Biome biome) {
-        return new TranslationTextComponent(biome.getTranslationKey()).getFormattedText();
+//        return new TranslationTextComponent(biome.getTranslationKey()).getFormattedText();
+        // @todo 1.16
+        return biome.getRegistryName().toString();
     }
 }

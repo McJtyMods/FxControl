@@ -3,13 +3,13 @@ package mcjty.fxcontrol;
 import mcjty.fxcontrol.commands.ModCommands;
 import mcjty.fxcontrol.rules.*;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
@@ -20,9 +20,10 @@ public class ForgeEventHandlers {
     public static boolean debug = false;
 
     @SubscribeEvent
-    public void serverLoad(FMLServerStartingEvent event) {
-        ModCommands.register(event.getCommandDispatcher());
+    public void serverLoad(RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
     }
+
 
     public static Map<Integer, Integer> tickCounters = new HashMap<>();
 
@@ -39,7 +40,7 @@ public class ForgeEventHandlers {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + new TranslationTextComponent(event.getWorld().getBiome(event.getPos()).getTranslationKey()).getFormattedText());
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getRegistryName());
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -65,7 +66,7 @@ public class ForgeEventHandlers {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + new TranslationTextComponent(event.getWorld().getBiome(event.getPos()).getTranslationKey()).getFormattedText());
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getRegistryName());
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -92,7 +93,7 @@ public class ForgeEventHandlers {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + new TranslationTextComponent(event.getWorld().getBiome(event.getPos()).getTranslationKey()).getFormattedText());
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getRegistryName());
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {
@@ -117,7 +118,7 @@ public class ForgeEventHandlers {
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + new TranslationTextComponent(event.getWorld().getBiome(event.getPos()).getTranslationKey()).getFormattedText());
+                            + " biome: " + event.getWorld().getBiome(event.getPos()).getRegistryName());
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {

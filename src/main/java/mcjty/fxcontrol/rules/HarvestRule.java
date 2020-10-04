@@ -31,7 +31,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
     public static final IEventQuery<BlockEvent.BreakEvent> EVENT_QUERY = new IEventQuery<BlockEvent.BreakEvent>() {
         @Override
         public World getWorld(BlockEvent.BreakEvent o) {
-            return o.getWorld().getWorld();
+            return o.getWorld() instanceof World ? (World) o.getWorld() : null;
         }
 
         @Override
@@ -193,7 +193,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
 
             @Override
             public World getWorld() {
-                return event.getWorld().getWorld();
+                return event.getWorld() instanceof World ? (World)event.getWorld() : null;
             }
 
             @Override
