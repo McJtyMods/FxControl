@@ -1,4 +1,5 @@
 modLoader="javafml"
+license="MIT License https://github.com/McJtyMods/FXControl/blob/1.16/LICENCE"
 loaderVersion="[33,)"
 issueTrackerURL="http://github.com/McJtyMods/FxControl/issues"
 displayURL="http://github.com/McJtyMods/FxControl/"

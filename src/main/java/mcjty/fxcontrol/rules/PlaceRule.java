@@ -31,7 +31,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
     public static final IEventQuery<BlockEvent.EntityPlaceEvent> EVENT_QUERY = new IEventQuery<BlockEvent.EntityPlaceEvent>() {
         @Override
         public World getWorld(BlockEvent.EntityPlaceEvent o) {
-            return o.getWorld().getWorld();
+            return o.getWorld() instanceof World ? (World)o.getWorld() : null;
         }
 
         @Override
@@ -194,7 +194,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
             @Override
             public World getWorld() {
-                return event.getWorld().getWorld();
+                return event.getWorld() instanceof World ? (World) event.getWorld() : null;
             }
 
             @Override
