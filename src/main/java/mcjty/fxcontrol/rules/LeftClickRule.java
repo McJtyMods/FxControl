@@ -90,7 +90,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(RANDOM))
                 .attribute(Attribute.create(SEESKY))
                 .attribute(Attribute.create(WEATHER))
-                .attribute(Attribute.create(TEMPCATEGORY))
+                .attribute(Attribute.createMulti(CATEGORY))
                 .attribute(Attribute.create(DIFFICULTY))
                 .attribute(Attribute.create(STRUCTURE))
                 .attribute(Attribute.createMulti(MOD))

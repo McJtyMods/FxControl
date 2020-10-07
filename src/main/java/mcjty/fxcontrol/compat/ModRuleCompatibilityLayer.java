@@ -5,6 +5,7 @@ import mcjty.tools.rules.IEventQuery;
 import mcjty.tools.rules.IModRuleCompatibilityLayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -159,8 +160,8 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public String getBiomeName(Biome biome) {
-//        return new TranslationTextComponent(biome.getTranslationKey()).getFormattedText();
-        // @todo 1.16
-        return biome.getRegistryName().toString();
+        ResourceLocation resourceLocation = biome.getRegistryName();
+        String s = "biome." + resourceLocation.getNamespace() + "." + resourceLocation.getPath();
+        return new TranslationTextComponent(s).getString();
     }
 }
