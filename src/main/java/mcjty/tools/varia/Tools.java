@@ -7,9 +7,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.DynamicRegistries;
+import net.minecraft.util.registry.MutableRegistry;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -18,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class Tools {
 
@@ -31,6 +36,16 @@ public class Tools {
         return null;
     }
 
+    /// Returns empty string on invalid biomes
+    @Nonnull
+    public static String getBiomeId(Biome biome) {
+        if (biome.getRegistryName() == null) {
+            Optional<MutableRegistry<Biome>> biomeRegistry = DynamicRegistries.func_239770_b_().func_230521_a_(Registry.BIOME_KEY);
+            return biomeRegistry.map(r -> r.getOptionalKey(biome).map(key -> key.getLocation().toString()).orElse("")).orElse("");
+        } else {
+            return biome.getRegistryName().toString();
+        }
+    }
 
     public static Pair<Float, ItemStack> parseStackWithFactor(String name, Logger logger) {
         int i = 0;
