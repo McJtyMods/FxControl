@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem which would cause In Control to fail
+
 1.15-1.0.4:
 - The biome check now also supports biome registry names (this is prefered)
 
