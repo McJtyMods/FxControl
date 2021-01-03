@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem which would cause In Control to fail
+
 1.16-2.0.1:
 - The 'biome' test would crash on biomes that were created using json
 
