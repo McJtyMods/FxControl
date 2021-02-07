@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.MutableRegistry;
@@ -26,14 +27,14 @@ import java.util.Optional;
 
 public class Tools {
 
-    public static World getWorldSafe(IWorld world) {
+    public static RegistryKey<World> getDimensionKey(IWorld world) {
         if (world instanceof World) {
-            return (World) world;
+            return ((World) world).getDimensionKey();
+        } else if (world instanceof IServerWorld) {
+            return ((IServerWorld) world).getWorld().getDimensionKey();
+        } else {
+            throw new IllegalStateException("Not possible to get a dimension key here!");
         }
-        else if (world instanceof IServerWorld) {
-            return ((IServerWorld) world).getWorld();
-        }
-        return null;
     }
 
     /// Returns empty string on invalid biomes

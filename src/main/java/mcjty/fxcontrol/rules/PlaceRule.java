@@ -10,14 +10,13 @@ import mcjty.tools.rules.RuleBase;
 import mcjty.tools.typed.Attribute;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.GenericAttributeMapFactory;
-import mcjty.tools.varia.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.apache.logging.log4j.Level;
@@ -31,8 +30,8 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
     public static final IEventQuery<BlockEvent.EntityPlaceEvent> EVENT_QUERY = new IEventQuery<BlockEvent.EntityPlaceEvent>() {
         @Override
-        public World getWorld(BlockEvent.EntityPlaceEvent o) {
-            return Tools.getWorldSafe(o.getWorld());
+        public IWorld getWorld(BlockEvent.EntityPlaceEvent o) {
+            return o.getWorld();
         }
 
         @Override
@@ -194,8 +193,8 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
             }
 
             @Override
-            public World getWorld() {
-                return Tools.getWorldSafe(event.getWorld());
+            public IWorld getWorld() {
+                return event.getWorld();
             }
 
             @Override

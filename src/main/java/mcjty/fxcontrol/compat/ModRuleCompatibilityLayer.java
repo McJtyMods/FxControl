@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -108,22 +109,22 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
     }
 
     @Override
-    public boolean isSpring(World world) {
+    public boolean isSpring(IWorld world) {
         return SereneSeasonsSupport.isSpring(world);
     }
 
     @Override
-    public boolean isSummer(World world) {
+    public boolean isSummer(IWorld world) {
         return SereneSeasonsSupport.isSummer(world);
     }
 
     @Override
-    public boolean isWinter(World world) {
+    public boolean isWinter(IWorld world) {
         return SereneSeasonsSupport.isWinter(world);
     }
 
     @Override
-    public boolean isAutumn(World world) {
+    public boolean isAutumn(IWorld world) {
         return SereneSeasonsSupport.isAutumn(world);
     }
 
@@ -140,7 +141,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
     }
 
     @Override
-    public String getState(World world, String statename) {
+    public String getState(IWorld world, String statename) {
         // @todo 1.15
 //        return EnigmaSupport.getState(world, statename);
         return null;
@@ -153,7 +154,7 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
     }
 
     @Override
-    public void setState(World world, String statename, String statevalue) {
+    public void setState(IWorld world, String statename, String statevalue) {
         // @todo 1.15
 //        EnigmaSupport.setState(world, statename, statevalue);
     }

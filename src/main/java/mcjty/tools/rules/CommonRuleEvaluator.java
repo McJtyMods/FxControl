@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
@@ -306,10 +307,10 @@ public class CommonRuleEvaluator {
         List<RegistryKey<World>> dimensions = map.getList(DIMENSION);
         if (dimensions.size() == 1) {
             RegistryKey<World> dim = dimensions.get(0);
-            checks.add((event,query) -> query.getWorld(event).getDimensionKey().equals(dim));
+            checks.add((event,query) -> Tools.getDimensionKey(query.getWorld(event)).equals(dim));
         } else {
             Set<RegistryKey<World>> dims = new HashSet<>(dimensions);
-            checks.add((event,query) -> dims.contains(query.getWorld(event).getDimensionKey()));
+            checks.add((event,query) -> dims.contains(Tools.getDimensionKey(query.getWorld(event))));
         }
     }
 
@@ -335,9 +336,23 @@ public class CommonRuleEvaluator {
         boolean raining = weather.toLowerCase().startsWith("rain");
         boolean thunder = weather.toLowerCase().startsWith("thunder");
         if (raining) {
-            checks.add((event,query) -> query.getWorld(event).isRaining());
+            checks.add((event,query) -> {
+                IWorld world = query.getWorld(event);
+                if (world instanceof World) {
+                    return ((World) world).isRaining();
+                } else {
+                    return false;
+                }
+            });
         } else if (thunder) {
-            checks.add((event,query) -> query.getWorld(event).isThundering());
+            checks.add((event,query) -> {
+                IWorld world = query.getWorld(event);
+                if (world instanceof World) {
+                    return ((World) world).isThundering();
+                } else {
+                    return false;
+                }
+            });
         } else {
             logger.log(Level.ERROR, "Unknown weather '" + weather + "'! Use 'rain' or 'thunder'");
         }
@@ -441,7 +456,7 @@ public class CommonRuleEvaluator {
     }
 
     @Nullable
-    private BiPredicate<World, BlockPos> parseBlock(String json) {
+    private BiPredicate<IWorld, BlockPos> parseBlock(String json) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
         if (element.isJsonPrimitive()) {
@@ -461,7 +476,7 @@ public class CommonRuleEvaluator {
             }
         } else if (element.isJsonObject()) {
             JsonObject obj = element.getAsJsonObject();
-            BiPredicate<World, BlockPos> test;
+            BiPredicate<IWorld, BlockPos> test;
             if (obj.has("ore")) {
                 // @todo 1.15 ore dictionary?
 //                int oreId = OreDictionary.getOreID(obj.get("ore").getAsString());
@@ -498,7 +513,7 @@ public class CommonRuleEvaluator {
 
             if (obj.has("mod")) {
                 String mod = obj.get("mod").getAsString();
-                BiPredicate<World, BlockPos> finalTest = test;
+                BiPredicate<IWorld, BlockPos> finalTest = test;
                 test = (world, pos) -> finalTest.test(world, pos) && mod.equals(world.getBlockState(pos).getBlock().getRegistryName().getNamespace());
             }
             if (obj.has("energy")) {
@@ -510,7 +525,7 @@ public class CommonRuleEvaluator {
                     } else {
                         side = null;
                     }
-                    BiPredicate<World, BlockPos> finalTest = test;
+                    BiPredicate<IWorld, BlockPos> finalTest = test;
                     test = (world, pos) -> finalTest.test(world, pos) && energy.test(getEnergy(world, pos, side));
                 }
             }
@@ -522,7 +537,7 @@ public class CommonRuleEvaluator {
                     side = null;
                 }
                 List<Predicate<ItemStack>> items = getItems(obj.get("contains"));
-                BiPredicate<World, BlockPos> finalTest = test;
+                BiPredicate<IWorld, BlockPos> finalTest = test;
                 test = (world, pos) -> finalTest.test(world, pos) && contains(world, pos, side, items);
             }
 
@@ -574,7 +589,7 @@ public class CommonRuleEvaluator {
         List<String> blocks = map.getList(BLOCK);
         if (blocks.size() == 1) {
             String json = blocks.get(0);
-            BiPredicate<World, BlockPos> blockMatcher = parseBlock(json);
+            BiPredicate<IWorld, BlockPos> blockMatcher = parseBlock(json);
             if (blockMatcher != null) {
                 checks.add((event, query) -> {
                     BlockPos pos = posFunction.apply(event, query);
@@ -582,9 +597,9 @@ public class CommonRuleEvaluator {
                 });
             }
         } else {
-            List<BiPredicate<World, BlockPos>> blockMatchers = new ArrayList<>();
+            List<BiPredicate<IWorld, BlockPos>> blockMatchers = new ArrayList<>();
             for (String block : blocks) {
-                BiPredicate<World, BlockPos> blockMatcher = parseBlock(block);
+                BiPredicate<IWorld, BlockPos> blockMatcher = parseBlock(block);
                 if (blockMatcher == null) {
                     return;
                 }
@@ -594,8 +609,8 @@ public class CommonRuleEvaluator {
             checks.add((event,query) -> {
                 BlockPos pos = posFunction.apply(event, query);
                 if (pos != null) {
-                    World world = query.getWorld(event);
-                    for (BiPredicate<World, BlockPos> matcher : blockMatchers) {
+                    IWorld world = query.getWorld(event);
+                    for (BiPredicate<IWorld, BlockPos> matcher : blockMatchers) {
                         if (matcher.test(world, pos)) {
                             return true;
                         }
@@ -621,16 +636,26 @@ public class CommonRuleEvaluator {
     private void addMinTimeCheck(AttributeMap map) {
         final int mintime = map.get(MINTIME);
         checks.add((event,query) -> {
-            int time = (int) query.getWorld(event).getGameTime();
-            return (time % 24000) >= mintime;
+            IWorld world = query.getWorld(event);
+            if (world instanceof World) {
+                int time = (int) ((World)world).getGameTime();
+                return (time % 24000) >= mintime;
+            } else {
+                return false;
+            }
         });
     }
 
     private void addMaxTimeCheck(AttributeMap map) {
         final int maxtime = map.get(MAXTIME);
         checks.add((event,query) -> {
-            int time = (int) query.getWorld(event).getGameTime();
-            return (time % 24000) <= maxtime;
+            IWorld world = query.getWorld(event);
+            if (world instanceof World) {
+                int time = (int) ((World)world).getGameTime();
+                return (time % 24000) <= maxtime;
+            } else {
+                return false;
+            }
         });
     }
 
@@ -837,7 +862,7 @@ public class CommonRuleEvaluator {
         return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
-    private boolean contains(World world, BlockPos pos, @Nullable Direction side, @Nonnull List<Predicate<ItemStack>> matchers) {
+    private boolean contains(IWorld world, BlockPos pos, @Nullable Direction side, @Nonnull List<Predicate<ItemStack>> matchers) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity != null) {
             return tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).map(h -> {
@@ -857,7 +882,7 @@ public class CommonRuleEvaluator {
         return false;
     }
 
-    private int getEnergy(World world, BlockPos pos, @Nullable Direction side) {
+    private int getEnergy(IWorld world, BlockPos pos, @Nullable Direction side) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity != null) {
             return tileEntity.getCapability(CapabilityEnergy.ENERGY, side).map(IEnergyStorage::getEnergyStored).orElse(0);

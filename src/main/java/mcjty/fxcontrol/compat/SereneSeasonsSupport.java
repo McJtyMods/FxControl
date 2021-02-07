@@ -1,31 +1,32 @@
 package mcjty.fxcontrol.compat;
 
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class SereneSeasonsSupport {
 
-    public static boolean isSpring(World world) {
+    public static boolean isSpring(IWorld world) {
         // @todo 1.15
         return false;
 //        ISeasonState seasonState = SeasonHelper.getSeasonState(world);
 //        return Season.SPRING.equals(seasonState.getSeason());
     }
 
-    public static boolean isSummer(World world) {
+    public static boolean isSummer(IWorld world) {
         // @todo 1.15
         return false;
 //        ISeasonState seasonState = SeasonHelper.getSeasonState(world);
 //        return Season.SUMMER.equals(seasonState.getSeason());
     }
 
-    public static boolean isWinter(World world) {
+    public static boolean isWinter(IWorld world) {
         // @todo 1.15
         return false;
 //        ISeasonState seasonState = SeasonHelper.getSeasonState(world);
 //        return Season.WINTER.equals(seasonState.getSeason());
     }
 
-    public static boolean isAutumn(World world) {
+    public static boolean isAutumn(IWorld world) {
         // @todo 1.15
         return false;
 //        ISeasonState seasonState = SeasonHelper.getSeasonState(world);
