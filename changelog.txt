@@ -1,3 +1,6 @@
+Upcoming:
+- Gamestage support is working again
+
 1.16-2.0.3:
 - Fixed a big bug with the 'block' test which could cause worlgen to hang in some situations
 
