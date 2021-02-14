@@ -128,6 +128,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.createMulti(BIOME))
                 .attribute(Attribute.createMulti(BIOMETYPE))
                 .attribute(Attribute.createMulti(DIMENSION))
+                .attribute(Attribute.createMulti(DIMENSION_MOD))
 
                 .attribute(Attribute.create(ACTION_COMMAND))
                 .attribute(Attribute.create(ACTION_ADDSTAGE))

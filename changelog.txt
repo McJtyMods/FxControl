@@ -1,5 +1,6 @@
 Upcoming:
 - Structure testing works again
+- Added new 'dimensionmod' feature so that you can have a rule match for all dimensions of a given mod (like for example 'rftoolsdim')
 
 1.16-2.0.5:
 - LostCity support is working again
