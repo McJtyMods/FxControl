@@ -1,4 +1,4 @@
-Upcoming:
+1.16-2.0.8:
 - Fixed compatibility with In Control
 
 1.16-2.0.7:
