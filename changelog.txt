@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed structure testing for good hopefully
+
 1.16-2.0.8:
 - Fixed compatibility with In Control
 
