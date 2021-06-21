@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.fxcontrol.ErrorHandler;
 import mcjty.fxcontrol.RulesManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -25,6 +26,7 @@ public class CmdReload implements Command<CommandSource> {
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().asPlayer();
+        ErrorHandler.clearErrors();
         if (player != null) {
             player.sendMessage(new StringTextComponent("Reloaded FxControl rules"), Util.DUMMY_UUID);
             RulesManager.reloadRules();
