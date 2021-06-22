@@ -1,5 +1,6 @@
 Upcoming:
 - 'angry' tag should work better now
+- Much better error reporting and no longer crashing the game when there are json errors
 
 1.16-2.0.10:
 - Fixed mintime and maxtime

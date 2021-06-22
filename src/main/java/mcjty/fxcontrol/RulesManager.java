@@ -47,11 +47,20 @@ public class RulesManager {
             directory.mkdir();
         }
 
-        readRules(path, "effects.json", EffectRule::parse, effectRules);
-        readRules(path, "breakevents.json", HarvestRule::parse, harvestRules);
-        readRules(path, "placeevents.json", PlaceRule::parse, placeRules);
-        readRules(path, "rightclicks.json", RightClickRule::parse, rightclickRules);
-        readRules(path, "leftclicks.json", LeftClickRule::parse, leftclickRules);
+        safeCall("effects.json", () -> readRules(path, "effects.json", EffectRule::parse, effectRules));
+        safeCall("breakevents.json", () -> readRules(path, "breakevents.json", HarvestRule::parse, harvestRules));
+        safeCall("placeevents.json", () -> readRules(path, "placeevents.json", PlaceRule::parse, placeRules));
+        safeCall("rightclicks.json", () -> readRules(path, "rightclicks.json", RightClickRule::parse, rightclickRules));
+        safeCall("leftclicks.json", () -> readRules(path, "leftclicks.json", LeftClickRule::parse, leftclickRules));
+    }
+
+    private static void safeCall(String name, Runnable code) {
+        try {
+            code.run();
+        } catch (Exception e) {
+            ErrorHandler.error("JSON error in '" + name + "': check log for details (" + e.getMessage() + ")");
+            FxControl.setup.getLogger().log(Level.ERROR, "Error parsing '" + name + "'", e);
+        }
     }
 
     private static <T> void readRules(String path, String filename, Function<JsonElement, T> parser, List<T> rules) {

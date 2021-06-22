@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.fxcontrol.ErrorHandler;
 import mcjty.tools.typed.AttributeMap;
 import mcjty.tools.typed.Key;
 import mcjty.tools.varia.LookAtTools;
@@ -69,7 +70,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                 String name = element.getAsString();
                 Pair<Float, ItemStack> pair = Tools.parseStackWithFactor(name, logger);
                 if (pair.getValue().isEmpty()) {
-                    logger.log(Level.ERROR, "Unknown item '" + name + "'!");
+                    ErrorHandler.error("Unknown item '" + name + "'!");
                 } else {
                     items.add(pair);
                 }
@@ -80,7 +81,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                     items.add(pair);
                 }
             } else {
-                logger.log(Level.ERROR, "Item description '" + json + "' is not valid!");
+                ErrorHandler.error("Item description '" + json + "' is not valid!");
             }
         }
         return items;
@@ -279,7 +280,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
         String[] split = StringUtils.split(damage, "=");
         DamageSource source = damageMap.get(split[0]);
         if (source == null) {
-            logger.log(Level.ERROR, "Can't find damage source '" + split[0] + "'!");
+            ErrorHandler.error("Can't find damage source '" + split[0] + "'!");
             return;
         }
         float amount = 1.0f;
@@ -348,7 +349,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
             state = split[0];
             value = split[1];
         } catch (Exception e) {
-            logger.log(Level.ERROR, "Bad state=value specifier '" + s + "'!");
+            ErrorHandler.error("Bad state=value specifier '" + s + "'!");
             return;
         }
         String finalState = state;
@@ -365,7 +366,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
             state = split[0];
             value = split[1];
         } catch (Exception e) {
-            logger.log(Level.ERROR, "Bad state=value specifier '" + s + "'!");
+            ErrorHandler.error("Bad state=value specifier '" + s + "'!");
             return;
         }
         String finalState = state;
@@ -423,7 +424,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                 return;
             }
         } else {
-            logger.log(Level.ERROR, "Item description '" + json + "' is not valid!");
+            ErrorHandler.error("Item description '" + json + "' is not valid!");
             return;
         }
         actions.add(event -> event.getPlayer().setHeldItem(Hand.MAIN_HAND, stack.copy()));
@@ -479,11 +480,11 @@ public class RuleBase<T extends RuleBase.EventGetter> {
         JsonElement element = parser.parse(json);
         if (element.isJsonPrimitive()) {
             String blockname = element.getAsString();
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockname));
-            if (block == null) {
-                logger.log(Level.ERROR, "Block '" + blockname + "' is not valid!");
+            if (!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockname))) {
+                ErrorHandler.error("Block '" + blockname + "' is not valid!");
                 return;
             }
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockname));
             BlockState state = block.getDefaultState();
             actions.add(event -> {
                 BlockPos pos = posFunction.apply(event);
@@ -494,16 +495,16 @@ public class RuleBase<T extends RuleBase.EventGetter> {
         } else {
             JsonObject obj = element.getAsJsonObject();
             if (!obj.has("block")) {
-                logger.log(Level.ERROR, "Block is not valid!");
+                ErrorHandler.error("Block is not valid!");
                 return;
             }
 
             String blockname = obj.get("block").getAsString();
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockname));
-            if (block == null) {
-                logger.log(Level.ERROR, "Block '" + blockname + "' is not valid!");
+            if (!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockname))) {
+                ErrorHandler.error("Block '" + blockname + "' is not valid!");
                 return;
             }
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockname));
             BlockState state = block.getDefaultState();
             if (obj.has("properties")) {
                 JsonArray propArray = obj.get("properties").getAsJsonArray();
@@ -613,12 +614,12 @@ public class RuleBase<T extends RuleBase.EventGetter> {
         for (String p : map.getList(ACTION_POTION)) {
             String[] splitted = StringUtils.split(p, ',');
             if (splitted == null || splitted.length != 3) {
-                logger.log(Level.ERROR, "Bad potion specifier '" + p + "'! Use <potion>,<duration>,<amplifier>");
+                ErrorHandler.error("Bad potion specifier '" + p + "'! Use <potion>,<duration>,<amplifier>");
                 continue;
             }
             Effect potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(splitted[0]));
             if (potion == null) {
-                logger.log(Level.ERROR, "Can't find potion '" + p + "'!");
+                ErrorHandler.error("Can't find potion '" + p + "'!");
                 continue;
             }
             int duration = 0;
@@ -627,7 +628,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                 duration = Integer.parseInt(splitted[1]);
                 amplifier = Integer.parseInt(splitted[2]);
             } catch (NumberFormatException e) {
-                logger.log(Level.ERROR, "Bad duration or amplifier integer for '" + p + "'!");
+                ErrorHandler.error("Bad duration or amplifier integer for '" + p + "'!");
                 continue;
             }
             effects.add(new EffectInstance(potion, duration, amplifier));
@@ -684,7 +685,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
     }
 
     private void addSizeActions(AttributeMap map) {
-        logger.log(Level.WARN, "Mob resizing not implemented yet!");
+        ErrorHandler.error("Mob resizing not implemented yet!");
         float m = map.has(ACTION_SIZEMULTIPLY) ? map.get(ACTION_SIZEMULTIPLY) : 1;
         float a = map.has(ACTION_SIZEADD) ? map.get(ACTION_SIZEADD) : 0;
         actions.add(event -> {
@@ -787,7 +788,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
             try {
                 tagCompound = JsonToNBT.getTagFromJson(mobnbt);
             } catch (CommandSyntaxException e) {
-                logger.log(Level.ERROR, "Bad NBT for mob!");
+                ErrorHandler.error("Bad NBT for mob!");
                 return;
             }
             actions.add(event -> {
