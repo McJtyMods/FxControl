@@ -19,16 +19,16 @@ public class CmdReload implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("reload")
-                .requires(cs -> cs.hasPermissionLevel(1))
+                .requires(cs -> cs.hasPermission(1))
                 .executes(CMD);
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity player = context.getSource().asPlayer();
+        ServerPlayerEntity player = context.getSource().getPlayerOrException();
         ErrorHandler.clearErrors();
         if (player != null) {
-            player.sendMessage(new StringTextComponent("Reloaded FxControl rules"), Util.DUMMY_UUID);
+            player.sendMessage(new StringTextComponent("Reloaded FxControl rules"), Util.NIL_UUID);
             RulesManager.reloadRules();
         }
         return 0;

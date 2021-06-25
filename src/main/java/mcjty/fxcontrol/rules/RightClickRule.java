@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
+import mcjty.tools.rules.RuleBase.EventGetter;
+
 public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();

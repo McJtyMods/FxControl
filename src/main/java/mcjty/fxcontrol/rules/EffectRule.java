@@ -22,28 +22,30 @@ import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
+import mcjty.tools.rules.RuleBase.EventGetter;
+
 public class EffectRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
     public static final IEventQuery<TickEvent.PlayerTickEvent> EVENT_QUERY = new IEventQuery<TickEvent.PlayerTickEvent>() {
         @Override
         public World getWorld(TickEvent.PlayerTickEvent o) {
-            return o.player.getEntityWorld();
+            return o.player.getCommandSenderWorld();
         }
 
         @Override
         public BlockPos getPos(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition();
+            return o.player.blockPosition();
         }
 
         @Override
         public BlockPos getValidBlockPos(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition().down();
+            return o.player.blockPosition().below();
         }
 
         @Override
         public int getY(TickEvent.PlayerTickEvent o) {
-            return o.player.getPosition().getY();
+            return o.player.blockPosition().getY();
         }
 
         @Override
@@ -177,12 +179,12 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
 
             @Override
             public World getWorld() {
-                return event.player.getEntityWorld();
+                return event.player.getCommandSenderWorld();
             }
 
             @Override
             public BlockPos getPosition() {
-                return event.player.getPosition();
+                return event.player.blockPosition();
             }
         };
         for (Consumer<EventGetter> action : actions) {

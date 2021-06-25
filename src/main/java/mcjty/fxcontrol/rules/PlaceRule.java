@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
+import mcjty.tools.rules.RuleBase.EventGetter;
+
 public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
@@ -71,7 +73,7 @@ public class PlaceRule extends RuleBase<RuleBase.EventGetter> {
 
         @Override
         public ItemStack getItem(BlockEvent.EntityPlaceEvent o) {
-            return o.getEntity() instanceof PlayerEntity ? ((PlayerEntity) o.getEntity()).getHeldItem(((PlayerEntity) o.getEntity()).getActiveHand()) : ItemStack.EMPTY;
+            return o.getEntity() instanceof PlayerEntity ? ((PlayerEntity) o.getEntity()).getItemInHand(((PlayerEntity) o.getEntity()).getUsedItemHand()) : ItemStack.EMPTY;
         }
     };
 

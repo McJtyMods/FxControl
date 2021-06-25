@@ -29,7 +29,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getWorld().isRemote) {
+        if (event.getWorld().isClientSide) {
             return;
         }
         int i = 0;
@@ -55,7 +55,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onLeftClickEvent(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getWorld().isRemote) {
+        if (event.getWorld().isClientSide) {
             return;
         }
         int i = 0;
@@ -82,7 +82,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onBlockPaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (event.getWorld().isRemote()) {
+        if (event.getWorld().isClientSide()) {
             return;
         }
         int i = 0;
@@ -107,7 +107,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
-        if (event.getWorld().isRemote()) {
+        if (event.getWorld().isClientSide()) {
             return;
         }
         int i = 0;
@@ -139,7 +139,7 @@ public class ForgeEventHandlers {
             return;
         }
 
-        int id = event.player.getEntityId();
+        int id = event.player.getId();
         if (!tickCounters.containsKey(id)) {
             tickCounters.put(id, 0);
         }
@@ -151,7 +151,7 @@ public class ForgeEventHandlers {
                 if (debug) {
                     FxControl.setup.getLogger().log(Level.INFO, "Join Rule " + i
                             + " entity: " + event.player.getName()
-                            + " y: " + event.player.getPosition().getY());
+                            + " y: " + event.player.blockPosition().getY());
                 }
                 rule.action(event);
                 return;
