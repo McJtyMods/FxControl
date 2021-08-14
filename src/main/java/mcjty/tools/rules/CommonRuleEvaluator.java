@@ -37,7 +37,6 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +55,7 @@ import static mcjty.tools.rules.CommonRuleKeys.*;
 
 public class CommonRuleEvaluator {
 
-    protected final List<BiFunction<Event, IEventQuery, Boolean>> checks = new ArrayList<>();
+    protected final List<BiFunction<Object, IEventQuery, Boolean>> checks = new ArrayList<>();
     private final Logger logger;
     private final IModRuleCompatibilityLayer compatibility;
 
@@ -354,7 +353,7 @@ public class CommonRuleEvaluator {
                 }
             });
         } else if (thunder) {
-            checks.add((event,query) -> {
+            checks.add((event, query) -> {
                 IWorld world = query.getWorld(event);
                 if (world instanceof World) {
                     return ((World) world).isThundering();
@@ -431,7 +430,7 @@ public class CommonRuleEvaluator {
     }
 
     @Nonnull
-    private BiFunction<Event, IEventQuery, BlockPos> parseOffset(String json) {
+    private BiFunction<Object, IEventQuery, BlockPos> parseOffset(String json) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
         JsonObject obj = element.getAsJsonObject();
@@ -616,7 +615,7 @@ public class CommonRuleEvaluator {
 
     private void addBlocksCheck(AttributeMap map) {
 
-        BiFunction<Event, IEventQuery, BlockPos> posFunction;
+        BiFunction<Object, IEventQuery, BlockPos> posFunction;
         if (map.has(BLOCKOFFSET)) {
             posFunction = parseOffset(map.get(BLOCKOFFSET));
         } else {
@@ -754,8 +753,8 @@ public class CommonRuleEvaluator {
     }
 
 
-    public boolean match(Event event, IEventQuery query) {
-        for (BiFunction<Event, IEventQuery, Boolean> rule : checks) {
+    public boolean match(Object event, IEventQuery query) {
+        for (BiFunction<Object, IEventQuery, Boolean> rule : checks) {
             if (!rule.apply(event, query)) {
                 return false;
             }
