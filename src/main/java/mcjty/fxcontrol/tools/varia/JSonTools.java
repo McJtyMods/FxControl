@@ -1,4 +1,4 @@
-package mcjty.tools.varia;
+package mcjty.fxcontrol.tools.varia;
 
 import com.google.gson.*;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,9 +45,8 @@ public class JSonTools {
         }
 
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(br);
 
-        return element;
+        return parser.parse(br);
     }
 
     private static void makeEmptyRuleFile(File file, Logger logger) {

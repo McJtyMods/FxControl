@@ -2,7 +2,6 @@ package mcjty.fxcontrol;
 
 import mcjty.fxcontrol.commands.ModCommands;
 import mcjty.fxcontrol.rules.*;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;

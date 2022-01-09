@@ -1,4 +1,4 @@
-package mcjty.tools.typed;
+package mcjty.fxcontrol.tools.typed;
 
 import javax.annotation.Nonnull;
 import java.util.*;

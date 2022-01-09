@@ -1,7 +1,7 @@
-package mcjty.tools.typed;
+package mcjty.fxcontrol.tools.typed;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A Type object represents a given type.
  */
-public final class Type<V> {
+public record Type<V>(@Nonnull Class<V> type) {
 
     // Root
     public static final Type<Object> OBJECT = new Type<Object>(Object.class);
@@ -22,25 +22,14 @@ public final class Type<V> {
     public static final Type<String> STRING = create(String.class);
     public static final Type<Boolean> BOOLEAN = create(Boolean.class);
     public static final Type<String> JSON = create(String.class);
-    public static final Type<RegistryKey<World>> DIMENSION_TYPE = create(RegistryKey.class);
+    public static final Type<ResourceKey<Level>> DIMENSION_TYPE = create(ResourceKey.class);
 
     // Map
     public static final Type<AttributeMap> MAP = create(AttributeMap.class);
 
-    @Nonnull private final Class<V> type;
-
-    private Type(@Nonnull final Class<V> type) {
-        this.type = type;
-    }
-
     @Nonnull
     public static <V> Type<V> create(@Nonnull final Class<? super V> type) {
         return new Type<V>((Class<V>) type);
-    }
-
-    @Nonnull
-    public Class<V> getType() {
-        return type;
     }
 
     @Nonnull
@@ -54,6 +43,6 @@ public final class Type<V> {
 
     @Override
     public String toString() {
-        return "Type(" + getType().getSimpleName() + ')';
+        return "Type(" + type().getSimpleName() + ')';
     }
 }

@@ -4,19 +4,19 @@ import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
-import mcjty.tools.rules.IEventQuery;
-import mcjty.tools.rules.IModRuleCompatibilityLayer;
-import mcjty.tools.rules.RuleBase;
-import mcjty.tools.typed.Attribute;
-import mcjty.tools.typed.AttributeMap;
-import mcjty.tools.typed.GenericAttributeMapFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import mcjty.fxcontrol.tools.rules.IEventQuery;
+import mcjty.fxcontrol.tools.rules.IModRuleCompatibilityLayer;
+import mcjty.fxcontrol.tools.rules.RuleBase;
+import mcjty.fxcontrol.tools.typed.Attribute;
+import mcjty.fxcontrol.tools.typed.AttributeMap;
+import mcjty.fxcontrol.tools.typed.GenericAttributeMapFactory;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.apache.logging.log4j.Level;
@@ -25,14 +25,12 @@ import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
 
-import mcjty.tools.rules.RuleBase.EventGetter;
-
 public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
     public static final IEventQuery<BlockEvent.BreakEvent> EVENT_QUERY = new IEventQuery<BlockEvent.BreakEvent>() {
         @Override
-        public IWorld getWorld(BlockEvent.BreakEvent o) {
+        public LevelAccessor getWorld(BlockEvent.BreakEvent o) {
             return o.getWorld();
         }
 
@@ -67,7 +65,7 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
         }
 
         @Override
-        public PlayerEntity getPlayer(BlockEvent.BreakEvent o) {
+        public Player getPlayer(BlockEvent.BreakEvent o) {
             return o.getPlayer();
         }
 
@@ -190,12 +188,12 @@ public class HarvestRule extends RuleBase<RuleBase.EventGetter> {
             }
 
             @Override
-            public PlayerEntity getPlayer() {
+            public Player getPlayer() {
                 return event.getPlayer();
             }
 
             @Override
-            public IWorld getWorld() {
+            public LevelAccessor getWorld() {
                 return event.getWorld();
             }
 

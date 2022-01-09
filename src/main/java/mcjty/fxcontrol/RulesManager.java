@@ -112,9 +112,8 @@ public class RulesManager {
         }
 
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(br);
 
-        return element;
+        return parser.parse(br);
     }
 
     private static void makeEmptyRuleFile(File file) {

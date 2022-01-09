@@ -2,9 +2,9 @@ package mcjty.fxcontrol.rules.support;
 
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
-import mcjty.tools.rules.CommonRuleEvaluator;
-import mcjty.tools.typed.AttributeMap;
-import net.minecraft.item.ItemStack;
+import mcjty.fxcontrol.tools.rules.CommonRuleEvaluator;
+import mcjty.fxcontrol.tools.typed.AttributeMap;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.HashSet;
 import java.util.List;

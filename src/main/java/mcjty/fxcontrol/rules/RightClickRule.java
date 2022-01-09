@@ -4,35 +4,32 @@ import com.google.gson.JsonElement;
 import mcjty.fxcontrol.FxControl;
 import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
 import mcjty.fxcontrol.rules.support.GenericRuleEvaluator;
-import mcjty.tools.rules.IEventQuery;
-import mcjty.tools.rules.IModRuleCompatibilityLayer;
-import mcjty.tools.rules.RuleBase;
-import mcjty.tools.typed.Attribute;
-import mcjty.tools.typed.AttributeMap;
-import mcjty.tools.typed.GenericAttributeMapFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import mcjty.fxcontrol.tools.rules.IEventQuery;
+import mcjty.fxcontrol.tools.rules.IModRuleCompatibilityLayer;
+import mcjty.fxcontrol.tools.rules.RuleBase;
+import mcjty.fxcontrol.tools.typed.Attribute;
+import mcjty.fxcontrol.tools.typed.AttributeMap;
+import mcjty.fxcontrol.tools.typed.GenericAttributeMapFactory;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
-import org.apache.logging.log4j.Level;
 
 import java.util.function.Consumer;
 
 import static mcjty.fxcontrol.rules.support.RuleKeys.*;
-
-import mcjty.tools.rules.RuleBase.EventGetter;
 
 public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
 
     private static final GenericAttributeMapFactory FACTORY = new GenericAttributeMapFactory();
     public static final IEventQuery<PlayerInteractEvent.RightClickBlock> EVENT_QUERY = new IEventQuery<PlayerInteractEvent.RightClickBlock>() {
         @Override
-        public World getWorld(PlayerInteractEvent.RightClickBlock o) {
+        public Level getWorld(PlayerInteractEvent.RightClickBlock o) {
             return o.getWorld();
         }
 
@@ -67,7 +64,7 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
         }
 
         @Override
-        public PlayerEntity getPlayer(PlayerInteractEvent.RightClickBlock o) {
+        public Player getPlayer(PlayerInteractEvent.RightClickBlock o) {
             return o.getPlayer();
         }
 
@@ -191,12 +188,12 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
             }
 
             @Override
-            public PlayerEntity getPlayer() {
+            public Player getPlayer() {
                 return event.getPlayer();
             }
 
             @Override
-            public World getWorld() {
+            public Level getWorld() {
                 return event.getWorld();
             }
 
@@ -223,7 +220,7 @@ public class RightClickRule extends RuleBase<RuleBase.EventGetter> {
             try {
                 map = FACTORY.parse(element);
             } catch (Exception e) {
-                FxControl.setup.getLogger().log(Level.ERROR, e);
+                FxControl.setup.getLogger().log(org.apache.logging.log4j.Level.ERROR, e);
                 return null;
             }
             return new RightClickRule(map);

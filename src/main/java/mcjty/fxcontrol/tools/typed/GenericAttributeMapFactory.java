@@ -1,16 +1,16 @@
-package mcjty.tools.typed;
+package mcjty.fxcontrol.tools.typed;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.fxcontrol.ErrorHandler;
-import mcjty.tools.varia.JSonTools;
+import mcjty.fxcontrol.tools.varia.JSonTools;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class GenericAttributeMapFactory {
         AttributeMap map = new AttributeMap();
 
         for (Attribute attribute : attributes) {
-            Key key = attribute.getKey();
-            Type type = key.getType();
+            Key key = attribute.key();
+            Type type = key.type();
 
-            if (attribute.isMulti()) {
+            if (attribute.multi()) {
                 Function<JsonElement, Object> transformer;
                 if (type == Type.INTEGER) {
                     transformer = JsonElement::getAsInt;
@@ -49,7 +49,7 @@ public class GenericAttributeMapFactory {
                     transformer = JsonElement::toString;
                 } else if (type == Type.DIMENSION_TYPE) {
                     transformer = jsonElement -> {
-                        RegistryKey<World> worldkey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(jsonElement.getAsString()));
+                        ResourceKey<Level> worldkey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(jsonElement.getAsString()));
                         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                         if (server != null) {
                             if (!server.levelKeys().contains(worldkey)) {
@@ -62,7 +62,7 @@ public class GenericAttributeMapFactory {
                     transformer = e -> "INVALID";
                 }
 
-                JSonTools.getElement(jsonObject, key.getName())
+                JSonTools.getElement(jsonObject, key.name())
                         .ifPresent(e -> {
                             JSonTools.asArrayOrSingle(e)
                                     .map(transformer)
@@ -72,23 +72,23 @@ public class GenericAttributeMapFactory {
                         });
             } else {
                 if (type == Type.INTEGER) {
-                    map.setNonnull(key, JSonTools.parseInt(jsonObject, key.getName()));
+                    map.setNonnull(key, JSonTools.parseInt(jsonObject, key.name()));
                 } else if (type == Type.FLOAT) {
-                    map.setNonnull(key, JSonTools.parseFloat(jsonObject, key.getName()));
+                    map.setNonnull(key, JSonTools.parseFloat(jsonObject, key.name()));
                 } else if (type == Type.BOOLEAN) {
-                    map.setNonnull(key, JSonTools.parseBool(jsonObject, key.getName()));
+                    map.setNonnull(key, JSonTools.parseBool(jsonObject, key.name()));
                 } else if (type == Type.STRING) {
-                    if (jsonObject.has(key.getName())) {
-                        map.setNonnull(key, jsonObject.get(key.getName()).getAsString());
+                    if (jsonObject.has(key.name())) {
+                        map.setNonnull(key, jsonObject.get(key.name()).getAsString());
                     }
                 } else if (type == Type.DIMENSION_TYPE) {
-                    if (jsonObject.has(key.getName())) {
-                        JsonElement jsonElement = jsonObject.get(key.getName());
-                        map.setNonnull(key, RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(jsonElement.getAsString())));
+                    if (jsonObject.has(key.name())) {
+                        JsonElement jsonElement = jsonObject.get(key.name());
+                        map.setNonnull(key, ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(jsonElement.getAsString())));
                     }
                 } else if (type == Type.JSON) {
-                    if (jsonObject.has(key.getName())) {
-                        JsonElement el = jsonObject.get(key.getName());
+                    if (jsonObject.has(key.name())) {
+                        JsonElement el = jsonObject.get(key.name());
                         if (el.isJsonObject()) {
                             JsonObject obj = el.getAsJsonObject();
                             map.setNonnull(key, obj.toString());
@@ -100,7 +100,7 @@ public class GenericAttributeMapFactory {
                                 } else if (prim.isNumber()) {
                                     map.setNonnull(key, "" + prim.getAsInt());
                                 } else {
-                                    throw new RuntimeException("Bad type for key '" + key.getName() + "'!");
+                                    throw new RuntimeException("Bad type for key '" + key.name() + "'!");
                                 }
                             }
                         }
