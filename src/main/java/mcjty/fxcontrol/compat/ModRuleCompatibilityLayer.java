@@ -3,12 +3,13 @@ package mcjty.fxcontrol.compat;
 import mcjty.fxcontrol.setup.ModSetup;
 import mcjty.fxcontrol.tools.rules.IEventQuery;
 import mcjty.fxcontrol.tools.rules.IModRuleCompatibilityLayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
@@ -160,8 +161,8 @@ public class ModRuleCompatibilityLayer implements IModRuleCompatibilityLayer {
 
     @Override
     public String getBiomeName(Biome biome) {
-        ResourceLocation resourceLocation = biome.getRegistryName();
+        ResourceLocation resourceLocation = ForgeRegistries.BIOMES.getKey(biome);
         String s = "biome." + resourceLocation.getNamespace() + "." + resourceLocation.getPath();
-        return new TranslatableComponent(s).getString();
+        return Component.translatable(s).getString();
     }
 }

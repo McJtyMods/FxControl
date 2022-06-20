@@ -9,9 +9,9 @@ import mcjty.fxcontrol.ErrorHandler;
 import mcjty.fxcontrol.RulesManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.Util;
-import net.minecraft.network.chat.TextComponent;
 
 public class CmdReload implements Command<CommandSourceStack> {
 
@@ -28,7 +28,7 @@ public class CmdReload implements Command<CommandSourceStack> {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ErrorHandler.clearErrors();
         if (player != null) {
-            player.sendMessage(new TextComponent("Reloaded FxControl rules"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.literal("Reloaded FxControl rules"));
             RulesManager.reloadRules();
         }
         return 0;

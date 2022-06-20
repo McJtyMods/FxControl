@@ -1,10 +1,9 @@
 package mcjty.fxcontrol;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.Util;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -27,14 +26,14 @@ public class ErrorHandler {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                player.sendMessage(new TextComponent(ChatFormatting.RED + "FxControl Error: " + ChatFormatting.GOLD + message), Util.NIL_UUID);
+                player.sendSystemMessage(Component.literal(ChatFormatting.RED + "FxControl Error: " + ChatFormatting.GOLD + message));
             }
         }
     }
 
     public static void onPlayerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
         for (String error : errors) {
-            event.getPlayer().sendMessage(new TextComponent(ChatFormatting.RED + "FxControl Error: " + ChatFormatting.GOLD + error), Util.NIL_UUID);
+            event.getPlayer().sendSystemMessage(Component.literal(ChatFormatting.RED + "FxControl Error: " + ChatFormatting.GOLD + error));
         }
     }
 }
