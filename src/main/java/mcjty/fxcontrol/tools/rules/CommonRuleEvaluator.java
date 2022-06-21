@@ -13,12 +13,14 @@ import mcjty.fxcontrol.tools.varia.Tools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -92,8 +94,8 @@ public class CommonRuleEvaluator {
         if (map.has(WEATHER)) {
             addWeatherCheck(map);
         }
-        if (map.has(CATEGORY)) {
-            addCategoryCheck(map);
+        if (map.has(BIOMETAGS)) {
+            addBiomeTagCheck(map.getList(BIOMETAGS));
         }
         if (map.has(DIFFICULTY)) {
             addDifficultyCheck(map);
@@ -366,13 +368,25 @@ public class CommonRuleEvaluator {
         }
     }
 
-    private void addCategoryCheck(AttributeMap map) {
-        List<String> list = map.getList(CATEGORY);
-        Set<Biome.BiomeCategory> categories = list.stream().map(s -> Biome.BiomeCategory.byName(s.toLowerCase())).collect(Collectors.toSet());
-        checks.add((event,query) -> {
-            Holder<Biome> biome = query.getWorld(event).getBiome(query.getPos(event));
-            return categories.contains(Biome.getBiomeCategory(biome));
-        });
+    private void addBiomeTagCheck(List<String> list) {
+        Set<TagKey<Biome>> tags = list.stream().map(s -> TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(s))).collect(Collectors.toSet());
+        if (tags.size() == 1) {
+            TagKey<Biome> key = tags.iterator().next();
+            checks.add((event,query) -> {
+                Holder<Biome> biome = query.getWorld(event).getBiome(query.getPos(event));
+                return biome.is(key);
+            });
+        } else {
+            checks.add((event, query) -> {
+                Holder<Biome> biome = query.getWorld(event).getBiome(query.getPos(event));
+                for (TagKey<Biome> tag : tags) {
+                    if (biome.is(tag)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
     }
 
 
@@ -397,7 +411,7 @@ public class CommonRuleEvaluator {
             Set<String> biomenames = new HashSet<>(biomes);
             checks.add((event,query) -> {
                 Holder<Biome> biome = query.getWorld(event).getBiome(query.getPos(event));
-                if (biomenames.contains(biome.value().getRegistryName().toString())) {
+                if (biomenames.contains(ForgeRegistries.BIOMES.getKey(biome.value()).toString())) {
                     return true;
                 } else {
                     return biomenames.contains(compatibility.getBiomeName(biome.value()));
@@ -410,7 +424,7 @@ public class CommonRuleEvaluator {
         List<String> biomeTypes = map.getList(BIOMETYPE);
         Set<Biome> biomes = new HashSet<>();
         biomeTypes.stream().map(s -> BiomeManager.BiomeType.valueOf(s.toUpperCase())).
-                forEach(type -> BiomeManager.getBiomes(type).stream().forEach(t -> biomes.add(ForgeRegistries.BIOMES.getValue(t.getKey().getRegistryName()))));
+                forEach(type -> BiomeManager.getBiomes(type).stream().forEach(t -> biomes.add(ForgeRegistries.BIOMES.getValue(t.getKey().registry()))));
 
         checks.add((event,query) -> {
             Holder<Biome> biome = query.getWorld(event).getBiome(query.getPos(event));
@@ -546,7 +560,7 @@ public class CommonRuleEvaluator {
                 test = (world, pos) -> {
                     LevelChunk chunk = world.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
                     if (chunk != null) {
-                        return finalTest.test(world, pos) && mod.equals(world.getBlockState(pos).getBlock().getRegistryName().getNamespace());
+                        return finalTest.test(world, pos) && mod.equals(ForgeRegistries.BLOCKS.getKey(world.getBlockState(pos).getBlock()).getNamespace());
                     } else {
                         return false;
                     }
@@ -876,7 +890,7 @@ public class CommonRuleEvaluator {
         if (obj.has("mod")) {
             String mod = obj.get("mod").getAsString();
             Predicate<ItemStack> finalTest = test;
-            test = s -> finalTest.test(s) && "mod".equals(s.getItem().getRegistryName().getNamespace());
+            test = s -> finalTest.test(s) && "mod".equals(ForgeRegistries.ITEMS.getKey(s.getItem()).getNamespace());
         }
         if (obj.has("nbt")) {
             List<Predicate<CompoundTag>> nbtMatchers = getNbtMatchers(obj, logger);

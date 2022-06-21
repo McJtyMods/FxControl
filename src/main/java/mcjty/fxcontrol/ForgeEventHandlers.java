@@ -2,6 +2,7 @@ package mcjty.fxcontrol;
 
 import mcjty.fxcontrol.commands.ModCommands;
 import mcjty.fxcontrol.rules.*;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -9,6 +10,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
@@ -36,10 +38,11 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
+                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).value().getRegistryName());
+                            + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -62,10 +65,11 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
+                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).value().getRegistryName());
+                            + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
                 rule.action(event);
                 event.setUseBlock(result);
@@ -89,10 +93,11 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
+                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).value().getRegistryName());
+                            + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {
@@ -114,10 +119,11 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
+                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()
-                            + " biome: " + event.getWorld().getBiome(event.getPos()).value().getRegistryName());
+                            + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
                 rule.action(event);
                 if (result == Event.Result.DENY) {

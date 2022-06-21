@@ -5,6 +5,7 @@ import mcjty.fxcontrol.compat.ModRuleCompatibilityLayer;
 import mcjty.fxcontrol.tools.rules.CommonRuleEvaluator;
 import mcjty.fxcontrol.tools.typed.AttributeMap;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,7 @@ public class GenericRuleEvaluator extends CommonRuleEvaluator {
             String modid = mods.get(0);
             checks.add((event, query) -> {
                 ItemStack item = query.getItem(event);
-                return modid.equals(item.getItem().getRegistryName().getNamespace());
+                return modid.equals(ForgeRegistries.ITEMS.getKey(item.getItem()).getNamespace());
             });
         } else {
             Set<String> modids = new HashSet<>();
@@ -42,7 +43,7 @@ public class GenericRuleEvaluator extends CommonRuleEvaluator {
             }
             checks.add((event, query) -> {
                 ItemStack item = query.getItem(event);
-                String mod = item.getItem().getRegistryName().getNamespace();
+                String mod = ForgeRegistries.ITEMS.getKey(item.getItem()).getNamespace();
                 return modids.contains(mod);
             });
         }

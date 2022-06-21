@@ -3,13 +3,16 @@ package mcjty.fxcontrol.tools.cache;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import mcjty.fxcontrol.tools.varia.Tools;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,11 +44,13 @@ public class StructureCache {
         if (chunk == null) {
             return false;
         }
-        Map<ConfiguredStructureFeature<?, ?>, LongSet> references = chunk.getAllReferences();
-        for (Map.Entry<ConfiguredStructureFeature<?, ?>, LongSet> e : references.entrySet()) {
+        Map<Structure, LongSet> references = chunk.getAllReferences();
+        for (Map.Entry<Structure, LongSet> e : references.entrySet()) {
             LongSet longs = e.getValue();
             if (!longs.isEmpty()) {
-                structureCache.put(new StructureCacheEntry(e.getKey().feature.getRegistryName().toString(), dimension, cplong), true);
+                Structure struct = e.getKey();
+                ResourceLocation key = sw.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY).getKey(struct);
+                structureCache.put(new StructureCacheEntry(key.toString(), dimension, cplong), true);
             }
         }
 
