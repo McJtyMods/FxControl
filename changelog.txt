@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed minlight/maxlight
+
 1.18-3.0.1:
 - Port to 1.18.2
 

@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -720,7 +721,7 @@ public class CommonRuleEvaluator {
         final int minlight = map.get(MINLIGHT);
         checks.add((event,query) -> {
             BlockPos pos = query.getPos(event);
-            return query.getWorld(event).getMaxLocalRawBrightness(pos) >= minlight;
+            return query.getWorld(event).getBrightness(LightLayer.BLOCK, pos) >= minlight;
         });
     }
 
@@ -728,7 +729,7 @@ public class CommonRuleEvaluator {
         final int maxlight = map.get(MAXLIGHT);
         checks.add((event,query) -> {
             BlockPos pos = query.getPos(event);
-            return query.getWorld(event).getMaxLocalRawBrightness(pos) <= maxlight;
+            return query.getWorld(event).getBrightness(LightLayer.BLOCK, pos) <= maxlight;
         });
     }
 
