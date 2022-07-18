@@ -6,7 +6,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -30,7 +30,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getWorld().isClientSide) {
+        if (event.getLevel().isClientSide) {
             return;
         }
         int i = 0;
@@ -38,9 +38,9 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
+                    Biome biome = event.getLevel().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
-                            + " entity: " + event.getPlayer().getName()
+                            + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
@@ -57,7 +57,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onLeftClickEvent(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getWorld().isClientSide) {
+        if (event.getLevel().isClientSide) {
             return;
         }
         int i = 0;
@@ -65,9 +65,9 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
+                    Biome biome = event.getLevel().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
-                            + " entity: " + event.getPlayer().getName()
+                            + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
                             + " biome: " + ForgeRegistries.BIOMES.getKey(biome));
                 }
@@ -85,7 +85,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onBlockPaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (event.getWorld().isClientSide()) {
+        if (event.getLevel().isClientSide()) {
             return;
         }
         int i = 0;
@@ -93,7 +93,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
+                    Biome biome = event.getLevel().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getEntity().getName()
                             + " y: " + event.getPos().getY()
@@ -111,7 +111,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
-        if (event.getWorld().isClientSide()) {
+        if (event.getLevel().isClientSide()) {
             return;
         }
         int i = 0;
@@ -119,7 +119,7 @@ public class ForgeEventHandlers {
             if (rule.match(event)) {
                 Event.Result result = rule.getResult();
                 if (debug) {
-                    Biome biome = event.getWorld().getBiome(event.getPos()).value();
+                    Biome biome = event.getLevel().getBiome(event.getPos()).value();
                     FxControl.setup.getLogger().log(Level.INFO, "Rule " + i + ": "+ result
                             + " entity: " + event.getPlayer().getName()
                             + " y: " + event.getPos().getY()

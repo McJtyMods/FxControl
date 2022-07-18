@@ -30,7 +30,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
     public static final IEventQuery<PlayerInteractEvent.LeftClickBlock> EVENT_QUERY = new IEventQuery<PlayerInteractEvent.LeftClickBlock>() {
         @Override
         public Level getWorld(PlayerInteractEvent.LeftClickBlock o) {
-            return o.getWorld();
+            return o.getLevel();
         }
 
         @Override
@@ -50,7 +50,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
 
         @Override
         public Entity getEntity(PlayerInteractEvent.LeftClickBlock o) {
-            return o.getPlayer();
+            return o.getEntity();
         }
 
         @Override
@@ -65,7 +65,7 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
 
         @Override
         public Player getPlayer(PlayerInteractEvent.LeftClickBlock o) {
-            return o.getPlayer();
+            return o.getEntity();
         }
 
         @Override
@@ -184,17 +184,17 @@ public class LeftClickRule extends RuleBase<RuleBase.EventGetter> {
         EventGetter getter = new EventGetter() {
             @Override
             public LivingEntity getEntityLiving() {
-                return event.getPlayer();
+                return event.getEntity();
             }
 
             @Override
             public Player getPlayer() {
-                return event.getPlayer();
+                return event.getEntity();
             }
 
             @Override
             public Level getWorld() {
-                return event.getWorld();
+                return event.getLevel();
             }
 
             @Override
