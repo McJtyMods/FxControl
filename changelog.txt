@@ -1,5 +1,5 @@
-1.19-4.0.3:
-- Updated to latest forge
+Upcoming:
+- Fixed a bug with nbt matching (comparing any given tag with 'value'). It would only work for numeric values. Now strings and boolean values are also supported
 
 1.19-4.0.2:
 - Fixed minlight/maxlight
