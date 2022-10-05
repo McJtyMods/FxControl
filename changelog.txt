@@ -1,3 +1,6 @@
+Upcoming:
+- Support for Lost Cities added back
+
 1.19-4.0.6:
 - Nbt 'value' matching was broken
 
