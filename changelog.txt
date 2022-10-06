@@ -1,5 +1,6 @@
 Upcoming:
 - Support for Lost Cities added back
+- Added new 'slime' test to test if a position is in a slime chunk
 
 1.19-4.0.6:
 - Nbt 'value' matching was broken
