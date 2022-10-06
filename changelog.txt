@@ -1,3 +1,7 @@
+Upcoming:
+- Better 'insphere' test using newer version of Lost Cities
+- Lost City support is back
+
 1.18-3.0.5:
 - Nbt 'value' matching was broken
 
