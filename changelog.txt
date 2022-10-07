@@ -1,4 +1,4 @@
-Upcoming:
+1.18-3.0.6:
 - Better 'insphere' test using newer version of Lost Cities
 - Lost City support is back
 - Added new 'slime' test to test if a position is in a slime chunk
