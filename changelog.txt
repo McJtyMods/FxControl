@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed major slowdown in biome testing
+
 1.19-4.0.7:
 - Support for Lost Cities added back
 - Added new 'slime' test to test if a position is in a slime chunk
