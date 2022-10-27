@@ -1,3 +1,6 @@
+1.19-4.0.9:
+- Implemented gamestage support
+
 1.19-4.0.8:
 - Fixed major slowdown in biome testing
 
