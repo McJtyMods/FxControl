@@ -1,5 +1,7 @@
 package mcjty.fxcontrol.compat;
 
+import net.darkhax.gamestages.GameStageHelper;
+import net.darkhax.gamestages.data.IStageData;
 import net.minecraft.world.entity.player.Player;
 
 public class GameStageSupport {
