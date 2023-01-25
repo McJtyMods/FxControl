@@ -4,14 +4,11 @@ import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.fxcontrol.ErrorHandler;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 public class Tools {
 
@@ -41,17 +37,6 @@ public class Tools {
 
     public static String getBiomeId(Holder<Biome> biomeHolder) {
         return biomeHolder.unwrap().map((key) -> key.location().toString(), (key) -> "[unregistered " + key + "]");
-    }
-
-    /// Returns empty string on invalid biomes
-    @Nonnull
-    public static String getBiomeIdSlowAndOldAndProbablySomewhatWrong(Biome biome) {
-        if (ForgeRegistries.BIOMES.getKey(biome) == null) {
-            Optional<? extends Registry<Biome>> biomeRegistry = RegistryAccess.builtinCopy().registry(Registry.BIOME_REGISTRY);
-            return biomeRegistry.map(r -> r.getResourceKey(biome).map(key -> key.location().toString()).orElse("")).orElse("");
-        } else {
-            return ForgeRegistries.BIOMES.getKey(biome).toString();
-        }
     }
 
     public static Pair<Float, ItemStack> parseStackWithFactor(String name, Logger logger) {

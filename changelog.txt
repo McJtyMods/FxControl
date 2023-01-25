@@ -1,3 +1,6 @@
+Upcoming:
+- Port to 1.19.3
+
 1.19-4.0.9:
 - Implemented gamestage support
 

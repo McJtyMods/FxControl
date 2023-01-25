@@ -235,8 +235,8 @@ public class RuleBase<T extends RuleBase.EventGetter> {
             addSource(DamageSource.GENERIC);
             addSource(DamageSource.MAGIC);
             addSource(DamageSource.WITHER);
-            addSource(DamageSource.ANVIL);
-            addSource(DamageSource.FALLING_BLOCK);
+//            addSource(DamageSource.ANVIL);    // @todo 1.19.3
+//            addSource(DamageSource.FALLING_BLOCK);
             addSource(DamageSource.DRAGON_BREATH);
             // @todo 1.16
 //            addSource(DamageSource.FIREWORKS);
@@ -601,7 +601,7 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                 // @todo 1.15 check if this is right and what to do about finalSmoking
                 if (event.getWorld() instanceof Level) {
 //                event.getWorld().createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, finalStrength, finalFlaming, finalSmoking);
-                    ((Level)event.getWorld()).explode(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, finalStrength, finalFlaming, Explosion.BlockInteraction.DESTROY);
+                    ((Level)event.getWorld()).explode(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, finalStrength, finalFlaming, Level.ExplosionInteraction.TNT);
                 }
             }
         });
