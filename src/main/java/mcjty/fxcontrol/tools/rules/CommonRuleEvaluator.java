@@ -136,25 +136,43 @@ public class CommonRuleEvaluator {
             addBiomeTypesCheck(map);
         }
         if (map.has(HELMET)) {
-            addHelmetCheck(map);
+            addHelmetCheck(map, HELMET, false);
         }
         if (map.has(CHESTPLATE)) {
-            addChestplateCheck(map);
+            addChestplateCheck(map, CHESTPLATE, false);
         }
         if (map.has(LEGGINGS)) {
-            addLeggingsCheck(map);
+            addLeggingsCheck(map, LEGGINGS, false);
         }
         if (map.has(BOOTS)) {
-            addBootsCheck(map);
+            addBootsCheck(map, BOOTS, false);
+        }
+        if (map.has(LACKHELMET)) {
+            addHelmetCheck(map, LACKHELMET, true);
+        }
+        if (map.has(LACKCHESTPLATE)) {
+            addChestplateCheck(map, LACKCHESTPLATE, true);
+        }
+        if (map.has(LACKLEGGINGS)) {
+            addLeggingsCheck(map, LACKLEGGINGS, true);
+        }
+        if (map.has(LACKBOOTS)) {
+            addBootsCheck(map, LACKBOOTS, true);
         }
         if (map.has(PLAYER_HELDITEM)) {
-            addHeldItemCheck(map, PLAYER_HELDITEM);
+            addHeldItemCheck(map, PLAYER_HELDITEM, false);
         }
         if (map.has(HELDITEM)) {
-            addHeldItemCheck(map, HELDITEM);
+            addHeldItemCheck(map, HELDITEM, false);
+        }
+        if (map.has(LACKHELDITEM)) {
+            addHeldItemCheck(map, LACKHELDITEM, true);
         }
         if (map.has(OFFHANDITEM)) {
-            addOffHandItemCheck(map);
+            addOffHandItemCheck(map, OFFHANDITEM, false);
+        }
+        if (map.has(LACKOFFHANDITEM)) {
+        	addOffHandItemCheck(map, LACKOFFHANDITEM, true);
         }
         if (map.has(BOTHHANDSITEM)) {
             addBothHandsItemCheck(map);
@@ -1026,27 +1044,27 @@ public class CommonRuleEvaluator {
         return items;
     }
 
-    public void addHelmetCheck(AttributeMap map) {
-        List<Predicate<ItemStack>> items = getItems(map.getList(HELMET), logger);
-        addArmorCheck(items, EquipmentSlot.HEAD);
+    public void addHelmetCheck(AttributeMap map, Key<String> key, Boolean lacking) {
+        List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
+        addArmorCheck(items, EquipmentSlot.HEAD, lacking);
     }
 
-    public void addChestplateCheck(AttributeMap map) {
-        List<Predicate<ItemStack>> items = getItems(map.getList(CHESTPLATE), logger);
-        addArmorCheck(items, EquipmentSlot.CHEST);
+    public void addChestplateCheck(AttributeMap map, Key<String> key, Boolean lacking) {
+        List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
+        addArmorCheck(items, EquipmentSlot.CHEST, lacking);
     }
 
-    public void addLeggingsCheck(AttributeMap map) {
-        List<Predicate<ItemStack>> items = getItems(map.getList(LEGGINGS), logger);
-        addArmorCheck(items, EquipmentSlot.LEGS);
+    public void addLeggingsCheck(AttributeMap map, Key<String> key, Boolean lacking) {
+        List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
+        addArmorCheck(items, EquipmentSlot.LEGS, lacking);
     }
 
-    public void addBootsCheck(AttributeMap map) {
-        List<Predicate<ItemStack>> items = getItems(map.getList(BOOTS), logger);
-        addArmorCheck(items, EquipmentSlot.FEET);
+    public void addBootsCheck(AttributeMap map, Key<String> key, Boolean lacking) {
+        List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
+        addArmorCheck(items, EquipmentSlot.FEET, lacking);
     }
 
-    private void addArmorCheck(List<Predicate<ItemStack>> items, EquipmentSlot slot) {
+    private void addArmorCheck(List<Predicate<ItemStack>> items, EquipmentSlot slot, Boolean lacking) {
         checks.add((event,query) -> {
             Player player = query.getPlayer(event);
             if (player != null) {
@@ -1054,16 +1072,16 @@ public class CommonRuleEvaluator {
                 if (!armorItem.isEmpty()) {
                     for (Predicate<ItemStack> item : items) {
                         if (item.test(armorItem)) {
-                            return true;
+                            return !lacking;
                         }
                     }
                 }
             }
-            return false;
+            return lacking;
         });
     }
 
-    public void addHeldItemCheck(AttributeMap map, Key<String> key) {
+    public void addHeldItemCheck(AttributeMap map, Key<String> key, Boolean lacking) {
         List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
         checks.add((event,query) -> {
             Player player = query.getPlayer(event);
@@ -1072,17 +1090,17 @@ public class CommonRuleEvaluator {
                 if (!mainhand.isEmpty()) {
                     for (Predicate<ItemStack> item : items) {
                         if (item.test(mainhand)) {
-                            return true;
+                            return !lacking;
                         }
                     }
                 }
             }
-            return false;
+            return lacking;
         });
     }
 
-    public void addOffHandItemCheck(AttributeMap map) {
-        List<Predicate<ItemStack>> items = getItems(map.getList(OFFHANDITEM), logger);
+    public void addOffHandItemCheck(AttributeMap map, Key<String> key, Boolean lacking) {
+        List<Predicate<ItemStack>> items = getItems(map.getList(key), logger);
         checks.add((event,query) -> {
             Player player = query.getPlayer(event);
             if (player != null) {
@@ -1090,12 +1108,12 @@ public class CommonRuleEvaluator {
                 if (!offhand.isEmpty()) {
                     for (Predicate<ItemStack> item : items) {
                         if (item.test(offhand)) {
-                            return true;
+                            return !lacking;
                         }
                     }
                 }
             }
-            return false;
+            return lacking;
         });
     }
 
