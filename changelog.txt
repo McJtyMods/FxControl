@@ -1,4 +1,4 @@
-Upcoming:
+1.19-4.0.10:
 - TqLxQuanZ added various 'lackXXX' keywords (like 'lackhelmet', 'lackoffhanditem', ...) which perform the inverse test on having a certain item there
 
 1.19-4.0.9:
