@@ -1,3 +1,7 @@
+Upcoming:
+- Added support for the 'tag' keyword in a block description (in favor of the old and non functional 'ore' keyword)
+- The 'command' action works again
+
 1.19-4.0.10:
 - TqLxQuanZ added various 'lackXXX' keywords (like 'lackhelmet', 'lackoffhanditem', ...) which perform the inverse test on having a certain item there
 
