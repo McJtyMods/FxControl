@@ -10,11 +10,16 @@ import mcjty.fxcontrol.tools.typed.AttributeMap;
 import mcjty.fxcontrol.tools.typed.Key;
 import mcjty.fxcontrol.tools.varia.LookAtTools;
 import mcjty.fxcontrol.tools.varia.Tools;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -37,6 +42,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -243,13 +250,37 @@ public class RuleBase<T extends RuleBase.EventGetter> {
         }
     }
 
+    private static final TextComponent DEFAULT_NAME = new TextComponent("@");
+    private static final CommandSource EMPTY = new CommandSource() {
+        @Override
+        public void sendMessage(Component pComponent, UUID pSenderUUID) {
+
+        }
+
+        @Override
+        public boolean acceptsSuccess() {
+            return false;
+        }
+
+        @Override
+        public boolean acceptsFailure() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldInformAdmins() {
+            return false;
+        }
+    };
+
     private void addCommandAction(AttributeMap map) {
         String command = map.get(ACTION_COMMAND);
         actions.add(event -> {
-            // @todo 1.15 new command system
-//            MinecraftServer server = event.getWorld().getServer();
-//            PlayerEntity player = event.getPlayer();
-//            server.commandManager.executeCommand(player != null ? player : new DummyCommandSender(event.getWorld(), null), command);
+            MinecraftServer server = event.getWorld().getServer();
+            Player player = event.getPlayer();
+            CommandSourceStack stack = new CommandSourceStack(EMPTY, Vec3.atCenterOf(event.getPosition()), Vec2.ZERO, (ServerLevel) event.getWorld(), 2,
+                    DEFAULT_NAME.getString(), DEFAULT_NAME, server, player);
+            server.getCommands().performCommand(stack, command);
         });
     }
 
@@ -752,7 +783,6 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                     if (entityLiving instanceof EnderMan) {
                         if (item.getItem() instanceof BlockItem) {
                             BlockItem b = (BlockItem) item.getItem();
-                            // @todo 1.15 metadata
                             ((EnderMan) entityLiving).setCarriedBlock(b.getBlock().defaultBlockState());
                         }
                     } else {
@@ -769,7 +799,6 @@ public class RuleBase<T extends RuleBase.EventGetter> {
                     if (entityLiving instanceof EnderMan) {
                         if (item.getItem() instanceof BlockItem) {
                             BlockItem b = (BlockItem) item.getItem();
-                            // @todo 1.15 metadata
                             ((EnderMan) entityLiving).setCarriedBlock(b.getBlock().defaultBlockState());
                         }
                     } else {

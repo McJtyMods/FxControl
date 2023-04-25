@@ -13,12 +13,14 @@ import mcjty.fxcontrol.tools.varia.Tools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -520,11 +522,13 @@ public class CommonRuleEvaluator {
         JsonElement element = parser.parse(json);
         if (element.isJsonPrimitive()) {
             String blockname = element.getAsString();
-            if (blockname.startsWith("ore:")) {
-                // @todo 1.15 ore dictionary?
-//                int oreId = OreDictionary.getOreID(blockname.substring(4));
-//                return (world, pos) -> isMatchingOreDict(oreId, world.getBlockState(pos).getBlock());
-                return (world, pos) -> false;
+            if (blockname.startsWith("tag:")) {
+                ResourceLocation tagname = new ResourceLocation(blockname.substring(4));
+                TagKey<Block> key = TagKey.create(Registry.BLOCK.key(), tagname);
+                return (world, pos) -> {
+                    BlockState state = world.getBlockState(pos);
+                    return state.is(key);
+                };
             } else {
                 if (!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockname))) {
                     ErrorHandler.error("Block '" + blockname + "' is not valid!");
@@ -536,11 +540,13 @@ public class CommonRuleEvaluator {
         } else if (element.isJsonObject()) {
             JsonObject obj = element.getAsJsonObject();
             BiPredicate<LevelAccessor, BlockPos> test;
-            if (obj.has("ore")) {
-                // @todo 1.15 ore dictionary?
-//                int oreId = OreDictionary.getOreID(obj.get("ore").getAsString());
-//                test = (world, pos) -> isMatchingOreDict(oreId, world.getBlockState(pos).getBlock());
-                test = (world, pos) -> false;
+            if (obj.has("tag")) {
+                ResourceLocation tagname = new ResourceLocation(obj.get("tag").getAsString());
+                TagKey<Block> key = TagKey.create(Registry.BLOCK.key(), tagname);
+                test = (world, pos) -> {
+                    BlockState state = world.getBlockState(pos);
+                    return state.is(key);
+                };
             } else if (obj.has("block")) {
                 String blockname = obj.get("block").getAsString();
                 if (!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockname))) {
@@ -635,16 +641,7 @@ public class CommonRuleEvaluator {
         return items;
     }
 
-    private boolean isMatchingOreDict(int oreId, Block block) {
-//        ItemStack stack = new ItemStack(block);
-//        int[] oreIDs = stack.isEmpty() ? EMPTYINTS : OreDictionary.getOreIDs(stack);
-//        return isMatchingOreId(oreIDs, oreId);
-        // @todo 1.15 oredict
-        return false;
-    }
-
     private void addBlocksCheck(AttributeMap map) {
-
         BiFunction<Object, IEventQuery, BlockPos> posFunction;
         if (map.has(BLOCKOFFSET)) {
             posFunction = parseOffset(map.get(BLOCKOFFSET));
@@ -921,12 +918,11 @@ public class CommonRuleEvaluator {
                 test = s -> finalTest.test(s) && count.test(s.getCount());
             }
         }
-        if (obj.has("ore")) {
-            // @todo 1.15 ore dictionary
-//            int oreId = OreDictionary.getOreID(obj.get("ore").getAsString());
-//            Predicate<ItemStack> finalTest = test;
-//            test = s -> finalTest.test(s) && isMatchingOreId(s.isEmpty() ? EMPTYINTS : OreDictionary.getOreIDs(s), oreId);
-            test = s -> false;
+        if (obj.has("tag")) {
+            ResourceLocation tagname = new ResourceLocation(obj.get("tag").getAsString());
+            TagKey<Item> key = TagKey.create(Registry.ITEM.key(), tagname);
+            Predicate<ItemStack> finalTest = test;
+            test = s -> finalTest.test(s) && s.is(key);
         }
         if (obj.has("mod")) {
             String mod = obj.get("mod").getAsString();
