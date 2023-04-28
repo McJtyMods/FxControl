@@ -1,4 +1,4 @@
-Upcoming:
+1.19-4.0.11:
 - Added support for the 'tag' keyword in a block description (in favor of the old and non functional 'ore' keyword)
 - The 'command' action works again
 
