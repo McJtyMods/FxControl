@@ -1,3 +1,8 @@
+Upcoming:
+- The 'structure' test now supports lists
+- New 'hasstructure' boolean test
+- New' structuretags' test to test for structure tags
+
 1.19-4.0.13:
 - The remove gamestage action did actually8 add the stage instead of removing it
 

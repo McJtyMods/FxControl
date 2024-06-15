@@ -3,6 +3,7 @@ package mcjty.fxcontrol.tools.varia;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.fxcontrol.ErrorHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -18,6 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -42,6 +45,15 @@ public class Tools {
     public static String getBiomeId(Holder<Biome> biomeHolder) {
         return biomeHolder.unwrap().map((key) -> key.location().toString(), (key) -> "[unregistered " + key + "]");
     }
+
+    public static boolean isChunkInvalid(LevelAccessor world, BlockPos pos) {
+        LevelChunk chunk = world.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        if (chunk == null || !chunk.getStatus().isOrAfter(ChunkStatus.FULL)) {
+            return true;
+        }
+        return false;
+    }
+
 
     /// Returns empty string on invalid biomes
     @Nonnull
