@@ -89,7 +89,9 @@ public class EffectRule extends RuleBase<RuleBase.EventGetter> {
                 .attribute(Attribute.create(WEATHER))
                 .attribute(Attribute.createMulti(BIOMETAGS))
                 .attribute(Attribute.create(DIFFICULTY))
+                .attribute(Attribute.create(HASSTRUCTURE))
                 .attribute(Attribute.createMulti(STRUCTURE))
+                .attribute(Attribute.createMulti(STRUCTURETAGS))
 
                 .attribute(Attribute.create(GAMESTAGE))
 
